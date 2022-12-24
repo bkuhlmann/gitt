@@ -13,6 +13,7 @@ unless ENV["NO_COVERAGE"]
   end
 end
 
+require "dry/monads"
 require "gitt"
 require "refinements"
 
@@ -21,6 +22,8 @@ using Refinements::Pathnames
 Pathname.require_tree Bundler.root, "lib/gitt/shared_contexts/**/*.rb"
 
 RSpec.configure do |config|
+  include Dry::Monads[:result]
+
   config.color = true
   config.disable_monkey_patching!
   config.example_status_persistence_file_path = "./tmp/rspec-examples.txt"
