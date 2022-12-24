@@ -2,17 +2,33 @@
 :toclevels: 5
 :figure-caption!:
 
+:git_link: link:https://git-scm.com[Git]
+:struct_link: link:https://www.alchemists.io/articles/ruby_structs[Struct]
+
 = Gitt
+
+Provides a monadic Object API to the {git_link} CLI. This project is also an extraction of work originally implemented within the following projects:
+
+* link:https://www.alchemists.io/projects/git-lint[Git Lint]
+* link:https://www.alchemists.io/projects/milestoner[Milestoner]
+* link:https://www.alchemists.io/projects/rubysmith[Rubysmith]
+
+If you are looking for alternatives within this space, you might find the following gems of benefit too:
+
+* link:https://github.com/ruby-git/ruby-git[Ruby Git]
+* link:https://github.com/libgit2/rugged[Rugged]
 
 toc::[]
 
 == Features
 
-== Screencasts
+* Wraps all Git commands with additional enhancements to improve your working experience.
+* Answers link:https://dry-rb.org/gems/dry-monads[monads] so you can pipe commands together for more powerful and complex workflows.
 
 == Requirements
 
-. link:https://www.ruby-lang.org[Ruby].
+. {git_link}
+. link:https://www.ruby-lang.org[Ruby]
 
 == Setup
 
@@ -24,6 +40,219 @@ bin/setup
 ----
 
 == Usage
+
+At a high level, this project provides a centralized Object API via a single object: `Repository`. Example:
+
+[source,ruby]
+----
+git = Gitt::Repository.new
+
+git.branch          # Equivalent to `git branch <arguments>`.
+git.branch_default  # Answers default branch.
+git.branch_name     # Answers current branch.
+git.call            # Allows you to run any Git command.
+git.commits         # Answers commit records.
+git.config          # Equivalent to `git config <arguments>`.
+git.exist?          # Answers if current directory is a Git repository or not.
+git.get             # Equivalent to `git config get`.
+git.log             # Equivalent to `git log <arguments>`.
+git.origin?         # Answers if repository has an origin or not.
+git.set             # Equivalent to `get config set`.
+git.tag             # Equivalent to `git tag <arguments>`.
+git.tag?            # Answers if local or remote tag exists.
+git.tag_create      # Create a new tag.
+git.tag_last        # Anwswers last tag created.
+git.tag_local?      # Answers if local tag exists?
+git.tag_parse       # Parses and answers a tag record.
+git.tag_remote?     # Answers if remote tag exists?
+git.tagged?         # Answers if the repository has any tags.
+git.tags_push       # Pushes local tags to remote git.
+git.uncommitted     # Parses a file and answers an unsaved commit message.
+----
+
+=== Commands
+
+Should you want to use individual commands instead of interacting with the `Repository` object, you
+can leverage any of the objects in the `Commands` namespace which -- at a minimum -- use the link:https://www.alchemists.io/articles/interactor_pattern[Command Pattern]. Here are the _select_ commands which are enhanced further:
+
+==== link:https://git-scm.com/docs/git-branch[Branch]
+
+Handles branches.
+
+[source,ruby]
+----
+branch = Gitt::Commands::Branch.new
+
+# Answers branch default (via Git `init.defaultBranch` configuration).
+branch.default  # Success "main"
+
+# Accepts any argument you'd send to `git branch`. Example:
+branch.call "--list"  # Success "  main\n"
+
+# Answers current branch
+branch.name  # Success "major"
+----
+
+==== link:https://git-scm.com/docs/git-config[Config]
+
+Handles global and local configurations.
+
+[source,ruby]
+----
+config = Gitt::Commands::Config.new
+
+# Accepts any argument you'd send to `git config`. Example:
+config.call "--get", "rebase.abbreviateCommands"  # Success "true\n"
+
+# Answers value for key with support for fallback value or block manipulation.
+config.get "user.name"                                     # Success "Brooke Kuhlmann"
+config.get "user.unknown", "fallback"                      # Success "fallback"
+config.get("user.unknown") { |value| value + "fallback" }  # "fallback"
+
+# Answers true or false if origin is defined.
+config.origin?                                             # true
+
+# Sets configuration key and value.
+config.set "user.demo", "test"                             # Success "test"
+----
+
+==== link:https://git-scm.com/docs/git-log[Log]
+
+Handles commit history.
+
+[source,ruby]
+----
+log = Gitt::Commands::Log.new
+
+log.call "--oneline", "-1"  # Success "5e21a9866827 Added documentation\n"
+----
+
+The `Log` class provides two other methods but they require a more detailed explanation. The first is `Log#all` which answers an array of commits (records) upon success and accepts the same arguments as given to `#call`.
+
+[source,ruby]
+----
+commit = log.all
+----
+
+The second, is:
+
+[source,ruby]
+----
+commit log.uncommitted ".git/COMMIT_EDITMSG"
+----
+
+The above will answer a single commit record. This is great for building a commit object from an unsaved commit message. The only disadvantage of this approach is that you will get template commits which are always stripped out by Git when processing a _saved_ commit.
+
+==== link:https://git-scm.com/docs/git-tag[Tag]
+
+Handles the tagging/versioning of commits.
+
+[source,ruby]
+----
+tag = Gitt::Commands::Tag.new
+
+# Accepts any argument you'd send to `git tag`.
+# Example: tag.call "--list"
+stdout, stderr, status = tag.call
+
+# Answers true or false base on whether local and remote tag exist.
+tag.exist? "0.1.0"
+
+# Answers last tag for git.
+tag.last
+
+# Answers if local tag exists.
+tag.local? "0.1.0"
+
+# Pushes tags to remote git.
+tag.push
+
+# Answers if remote tag exists.
+tag.remote? "0.1.0"
+
+# Answers true or false based on whether repository is tagged.
+tag.tagged?
+----
+
+=== Models
+
+In order to have access to rich data from the Git client, there are several models available to you.
+
+==== Commit
+
+An instance of `Gitt::Commits::Model` is what is answered back to when using `Gitt::Repository` via the `#commits` or `#uncommitted` methods. In each case, you'll either get an array of records, a single record, or a failure depending on the result. Here's an example of a single record:
+
+[source,ruby]
+----
+# #<struct Gitt::Commits::Model
+#  author_date_relative="2 days ago",
+#  author_email="demo@example.com",
+#  author_name="Demo User",
+#  body="Necessary to explain recent changes.\n",
+#  body_lines=["Necessary to explain recent changes."],
+#  body_paragraphs=["Necessary to explain recent changes."],
+#  message="Updated documentation with new functionality\n\nNecessary to explain recent changes.\n",
+#  sha="5e21a9866827bf5c68bd445ea01b3837a3936b45",
+#  subject="Updated documentation with new functionality",
+#  trailers=[],
+#  trailers_index=nil>
+----
+
+You get a {struct_link} with the following attributes:
+
+* `author_date_relative`: Stores the relative date of when the commit was made.
+* `author_email`: Stores the author email.
+* `author_name`: Stores the author name.
+* `body`: Stores the commit body which excludes the subject and leading space.
+* `body_lines`: Stores each line of the body in an array.
+* `body_paragraphs`: Stores each paragraph of the body as an array (i.e. broken by double new lines).
+* `message`: Stores the entire, raw, commit message (i.e. subject and body).
+* `sha`: Stores the commit SHA.
+* `subject`: Stores the commit subject.
+* `trailers`: Stores any commit trailers as an array of `GtiPlus::Trailers::Model` records.
+* `trailers_index`: Stores the starting index of trailers within the commit message.
+
+==== Tag
+
+An instance of `Gitt::Tags::Model` is what is answered back to when using `Gitt::Repository` via the `#tag_parse` method. Here's an example:
+
+[source,ruby]
+----
+# #<struct Gitt::Tags::Model
+#  author_date="Tue Dec 29 17:33:01 2020 -0700",
+#  author_email="demo@example.com",
+#  author_name="Demo User",
+#  body="- Added gem skeleton\n- Added RSpec dependnecy",
+#  sha="d041d07c29f97b5b06b3b2fd05fa1dd018c7da7c",
+#  subject="Version 0.1.0",
+#  version="0.1.0">
+----
+
+You get a {struct_link} with the following attributes:
+
+*  `author_date`: Stores author creation date.
+*  `author_email`: Stores author email.
+*  `author_name`: Store author name.
+*  `body`: Stores body of tag which can be sentences, multiple paragraphs, and/or signature information.
+*  `sha`: Stores the commit SHA for which this tag labels
+*  `subject`: Stores the subject.
+*  `version`: Stores the version.
+
+==== Trailer
+
+A trailer is nested within a commit record when trailer information exists. Example:
+
+[source,ruby]
+----
+#<struct Gitt::Commits::Trailers::Model key="Issue", delimiter=":", space=" ", value="123">
+----
+
+The attributes break down as follows:
+
+* `key`: Answers the key.
+* `delimiter`: Answers the delimiter which must be a colon but can be missing if invalid.
+* `space`: Answers either a space or an empty string with the former being invalid.
+* `value`: Answers the value associated with the key.
 
 == Development
 
