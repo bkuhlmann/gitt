@@ -1,0 +1,34 @@
+= Versions
+
+== 1.0.0 (2022-11-20)
+
+* Added Dry Monads gem - Brooke Kuhlmann
+* Added RSpec fixtures - Brooke Kuhlmann
+* Added RSpec repository shared context - Brooke Kuhlmann
+* Added attributer parser - Brooke Kuhlmann
+* Added branch command - Brooke Kuhlmann
+* Added commit model - Brooke Kuhlmann
+* Added commit parser - Brooke Kuhlmann
+* Added commit trailer model - Brooke Kuhlmann
+* Added commit trailer parser - Brooke Kuhlmann
+* Added config command - Brooke Kuhlmann
+* Added date sanitizer - Brooke Kuhlmann
+* Added documentation - Brooke Kuhlmann
+* Added email sanitizer - Brooke Kuhlmann
+* Added lines sanitizer - Brooke Kuhlmann
+* Added log command - Brooke Kuhlmann
+* Added paragraphs santizer - Brooke Kuhlmann
+* Added person model - Brooke Kuhlmann
+* Added person parser - Brooke Kuhlmann
+* Added project skeleton - Brooke Kuhlmann
+* Added repository - Brooke Kuhlmann
+* Added sanitizer container - Brooke Kuhlmann
+* Added scissors sanitizer - Brooke Kuhlmann
+* Added shell - Brooke Kuhlmann
+* Added signature sanitizer - Brooke Kuhlmann
+* Added string, array, and shell constants - Brooke Kuhlmann
+* Added tag command - Brooke Kuhlmann
+* Added tag model - Brooke Kuhlmann
+* Added tag parser - Brooke Kuhlmann
+* Added trailers sanitizer - Brooke Kuhlmann
+* Updated RSpec helper to include monads - Brooke Kuhlmann
