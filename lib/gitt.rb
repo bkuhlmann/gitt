@@ -9,4 +9,7 @@ end
 
 # Main namespace.
 module Gitt
+  EMPTY_STRING = ""
+  EMPTY_ARRAY = [].freeze
+  SHELL = Shell.new.freeze
 end
