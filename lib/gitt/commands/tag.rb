@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "core"
 require "dry/monads"
 require "tempfile"
 
@@ -32,7 +33,7 @@ module Gitt
 
       def call(*arguments) = shell.call "tag", *arguments
 
-      def create version, body = EMPTY_STRING, *flags
+      def create version, body = Core::EMPTY_STRING, *flags
         return Failure "Unable to create Git tag without version." unless version
         return Failure "Tag exists: #{version}." if exist? version
 
@@ -57,13 +58,15 @@ module Gitt
              .or { |error| Failure error.delete_prefix("fatal: ").chomp }
       end
 
-      def local?(version) = call("--list", version).value_or(EMPTY_STRING).match?(/\A#{version}\Z/)
+      def local? version
+        call("--list", version).value_or(Core::EMPTY_STRING).match?(/\A#{version}\Z/)
+      end
 
       def push = shell.call "push", "--tags"
 
       def remote? version
         shell.call("ls-remote", "--tags", "origin", version)
-             .value_or(EMPTY_STRING)
+             .value_or(Core::EMPTY_STRING)
              .match?(%r(.+tags/#{version}\Z))
       end
 
@@ -71,7 +74,7 @@ module Gitt
         call(pretty_format, "--list", version).fmap { |content| parser.call content }
       end
 
-      def tagged? = !call.value_or(EMPTY_STRING).empty?
+      def tagged? = !call.value_or(Core::EMPTY_STRING).empty?
 
       private
 

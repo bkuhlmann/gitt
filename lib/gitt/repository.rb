@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "core"
+
 module Gitt
   # Primary object/wrapper for processing all Git related commands.
   # :reek:TooManyMethods
@@ -28,7 +30,7 @@ module Gitt
 
     def config(...) = commands.fetch(__method__).call(...)
 
-    def exist? = shell.call("rev-parse", "--git-dir").value_or(EMPTY_STRING).chomp == ".git"
+    def exist? = shell.call("rev-parse", "--git-dir").value_or(Core::EMPTY_STRING).chomp == ".git"
 
     def get(...) = commands.fetch(:config).get(...)
 
