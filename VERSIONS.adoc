@@ -1,5 +1,14 @@
 = Versions
 
+== 1.1.0 (2023-01-07)
+
+* Fixed RSpec helper to ignore library shared contexts - Brooke Kuhlmann
+* Added Core gem - Brooke Kuhlmann
+* Updated to Caliber 0.21.0 - Brooke Kuhlmann
+* Updated to Git Lint 5.0.0 - Brooke Kuhlmann
+* Updated to SimpleCov 0.22.0 - Brooke Kuhlmann
+* Refactored implementation to use empty core objects - Brooke Kuhlmann
+
 == 1.0.0 (2022-11-20)
 
 * Added Dry Monads gem - Brooke Kuhlmann
