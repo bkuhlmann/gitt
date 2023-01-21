@@ -241,7 +241,7 @@ RSpec.describe Gitt::Commands::Log do
   describe "#uncommitted" do
     it "answers single commit" do
       git_repo_dir.change_dir do
-        path = Bundler.root.join "spec/support/fixtures/commit-valid.txt"
+        path = SPEC_ROOT.join "support/fixtures/commit-valid.txt"
         result = command.uncommitted path
 
         expect(result.success).to have_attributes(

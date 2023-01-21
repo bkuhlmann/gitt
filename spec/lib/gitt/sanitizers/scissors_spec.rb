@@ -7,7 +7,7 @@ RSpec.describe Gitt::Sanitizers::Scissors do
 
   describe "#call" do
     it "answers content with scissors (verbosity) removed" do
-      content = Bundler.root.join("spec/support/fixtures/commit-verbose.txt").read
+      content = SPEC_ROOT.join("support/fixtures/commit-verbose.txt").read
 
       expect(sanitizer.call(content)).to eq(<<~CONTENT)
         Added commit with verbose option

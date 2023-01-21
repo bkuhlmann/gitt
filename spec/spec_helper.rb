@@ -18,6 +18,8 @@ require "dry/monads"
 require "gitt"
 require "refinements"
 
+SPEC_ROOT = Pathname(__dir__).realpath.freeze
+
 using Refinements::Pathnames
 
 Pathname.require_tree Bundler.root, "lib/gitt/shared_contexts/**/*.rb"
