@@ -3,15 +3,15 @@
 :figure-caption!:
 
 :git_link: link:https://git-scm.com[Git]
-:struct_link: link:https://www.alchemists.io/articles/ruby_structs[Struct]
+:struct_link: link:https://alchemists.io/articles/ruby_structs[Struct]
 
 = Gitt
 
 Provides a monadic Object API to the {git_link} CLI. This project is also an extraction of work originally implemented within the following projects:
 
-* link:https://www.alchemists.io/projects/git-lint[Git Lint]
-* link:https://www.alchemists.io/projects/milestoner[Milestoner]
-* link:https://www.alchemists.io/projects/rubysmith[Rubysmith]
+* link:https://alchemists.io/projects/git-lint[Git Lint]
+* link:https://alchemists.io/projects/milestoner[Milestoner]
+* link:https://alchemists.io/projects/rubysmith[Rubysmith]
 
 If you are looking for alternatives within this space, you might find the following gems of benefit too:
 
@@ -73,7 +73,7 @@ git.uncommitted     # Parses a file and answers an unsaved commit message.
 === Commands
 
 Should you want to use individual commands instead of interacting with the `Repository` object, you
-can leverage any of the objects in the `Commands` namespace which -- at a minimum -- use the link:https://www.alchemists.io/articles/interactor_pattern[Command Pattern]. Here are the _select_ commands which are enhanced further:
+can leverage any of the objects in the `Commands` namespace which -- at a minimum -- use the link:https://alchemists.io/articles/interactor_pattern[Command Pattern]. Here are the _select_ commands which are enhanced further:
 
 ==== link:https://git-scm.com/docs/git-branch[Branch]
 
@@ -281,19 +281,19 @@ To test, run:
 bin/rake
 ----
 
-== link:https://www.alchemists.io/policies/license[License]
+== link:https://alchemists.io/policies/license[License]
 
-== link:https://www.alchemists.io/policies/security[Security]
+== link:https://alchemists.io/policies/security[Security]
 
-== link:https://www.alchemists.io/policies/code_of_conduct[Code of Conduct]
+== link:https://alchemists.io/policies/code_of_conduct[Code of Conduct]
 
-== link:https://www.alchemists.io/policies/contributions[Contributions]
+== link:https://alchemists.io/policies/contributions[Contributions]
 
-== link:https://www.alchemists.io/projects/gitt/versions[Versions]
+== link:https://alchemists.io/projects/gitt/versions[Versions]
 
-== link:https://www.alchemists.io/community[Community]
+== link:https://alchemists.io/community[Community]
 
 == Credits
 
-* Built with link:https://www.alchemists.io/projects/gemsmith[Gemsmith].
-* Engineered by link:https://www.alchemists.io/team/brooke_kuhlmann[Brooke Kuhlmann].
+* Built with link:https://alchemists.io/projects/gemsmith[Gemsmith].
+* Engineered by link:https://alchemists.io/team/brooke_kuhlmann[Brooke Kuhlmann].
