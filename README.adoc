@@ -3,6 +3,7 @@
 :figure-caption!:
 
 :git_link: link:https://git-scm.com[Git]
+:rspec_link: link:https://rspec.info[RSpec]
 :struct_link: link:https://alchemists.io/articles/ruby_structs[Struct]
 
 = Gitt
@@ -13,7 +14,7 @@ Provides a monadic Object API to the {git_link} CLI. This project is also an ext
 * link:https://alchemists.io/projects/milestoner[Milestoner]
 * link:https://alchemists.io/projects/rubysmith[Rubysmith]
 
-If you are looking for alternatives within this space, you might find the following gems of benefit too:
+This project doesn't try to encompass the vast feature set natively provided by {git_link} but only exposes the most used features, limited as this may be. Over time, more of the {git_link} feature set will be implemented but it'll most likely happen slowly and organically. If you are looking for alternatives to this gem, then you might find the following of interest:
 
 * link:https://github.com/ruby-git/ruby-git[Ruby Git]
 * link:https://github.com/libgit2/rugged[Rugged]
@@ -22,8 +23,9 @@ toc::[]
 
 == Features
 
-* Wraps all Git commands with additional enhancements to improve your working experience.
-* Answers link:https://dry-rb.org/gems/dry-monads[monads] so you can pipe commands together for more powerful and complex workflows.
+* Wraps a subset of native {git_link} commands with additional enhancements to improve your working experience.
+* Answers link:https://dry-rb.org/gems/dry-monads[monads] you can pipe together -- or link:https://alchemists.io/projects/transactable[transact] -- for more powerful and complex workflows.
+* Provides _optional_ {rspec_link} shared contexts that speed up the testing of your own Git related implementations.
 
 == Requirements
 
@@ -61,7 +63,7 @@ git.set             # Equivalent to `get config set`.
 git.tag             # Equivalent to `git tag <arguments>`.
 git.tag?            # Answers if local or remote tag exists.
 git.tag_create      # Create a new tag.
-git.tag_last        # Anwswers last tag created.
+git.tag_last        # Answers last tag created.
 git.tag_local?      # Answers if local tag exists?
 git.tag_parse       # Parses and answers a tag record.
 git.tag_remote?     # Answers if remote tag exists?
@@ -253,6 +255,65 @@ The attributes break down as follows:
 * `delimiter`: Answers the delimiter which must be a colon but can be missing if invalid.
 * `space`: Answers either a space or an empty string with the former being invalid.
 * `value`: Answers the value associated with the key.
+
+=== RSpec
+
+For fans of {rspec_link}, this gem provides shared contexts you can use within your own test suites. These shared contexts are _optional_ and must be manually required to use.
+
+==== Git Commit
+
+Provides a default `git_commit` record of `Gitt::Commits::Model` with minimal information for testing purposes and can be used as follows:
+
+[source,ruby]
+----
+require "gitt/shared_contexts/git_commit"
+
+describe Demo do
+  include_context "with Git commit"
+end
+----
+
+==== Git Repository
+
+Provides a simple Git repository with a single commit for testing purposes. This repository is set up and torn down _around_ each spec. The repository is built within your project's `tmp` directory and provides a `git_repo_dir` pathname you can interact with. Here's how to use it:
+
+[source,ruby]
+----
+require "gitt/shared_contexts/git_repo"
+require "refinemenets/pathnames"
+
+describe Demo do
+  include_context "with Git repository"
+
+  using Refinements::Pathnames
+
+  it "is a demo" do
+    git_repo_dir.change_dir { # Your expectation goes here. }
+  end
+end
+----
+
+==== Temporary Directory
+
+Provides a temporary directory (i.e. `tmp/rspec`) for creating directories and or files you want set up and torn down _around_ each spec. Access to the `temp_dir` pathname is also provided for you. Here's how to use it:
+
+[source,ruby]
+----
+require "gitt/shared_contexts/temp_dir"
+require "refinemenets/pathnames"
+
+describe Demo do
+  include_context "with temporary directory"
+
+  using Refinements::Pathnames
+
+  it "is a demo" do
+    temp_dir.change_dir { # Your expectation goes here. }
+  end
+end
+----
+
+💡 The Git Repository shared context -- mentioned above -- includes this shared context by default so you don't have to manually include this shared context when using the Git Repository shared context.
 
 == Development
 
