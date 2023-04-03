@@ -16,12 +16,12 @@ RSpec.describe Gitt::Commands::Log do
 
     it "answers log with custom arguments" do
       git_repo_dir.change_dir do
-        expect(command.call("-1")).to match(Success((/Added documentation/)))
+        expect(command.call("-1")).to match(Success(/Added documentation/))
       end
     end
 
     it "answers error with invalid arguments" do
-      git_repo_dir.change_dir { expect(command.call("--bogus")).to match(Failure((/bogus/))) }
+      git_repo_dir.change_dir { expect(command.call("--bogus")).to match(Failure(/bogus/)) }
     end
   end
 
