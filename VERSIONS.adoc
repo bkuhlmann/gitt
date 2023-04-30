@@ -1,5 +1,11 @@
 = Versions
 
+== 1.1.3 (2023-04-30)
+
+* Fixed RuboCop Style/RedundantParentheses issues - Brooke Kuhlmann
+* Updated to Caliber 0.30.0 - Brooke Kuhlmann
+* Updated to Ruby 3.2.2 - Brooke Kuhlmann
+
 == 1.1.2 (2023-03-22)
 
 * Added RSpec shared context usage documentation - Brooke Kuhlmann
