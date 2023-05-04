@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |spec|
   spec.name = "gitt"
-  spec.version = "1.1.3"
+  spec.version = "2.0.0"
   spec.authors = ["Brooke Kuhlmann"]
   spec.email = ["brooke@alchemists.io"]
   spec.homepage = "https://alchemists.io/projects/gitt"
-  spec.summary = "Provides a monadic Object API wrapper around the Git CLI."
+  spec.summary = "A monadic Object API for the Git CLI."
   spec.license = "Hippocratic-2.1"
 
   spec.metadata = {

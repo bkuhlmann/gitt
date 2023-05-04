@@ -182,11 +182,11 @@ In order to have access to rich data from the Git client, there are several mode
 
 ==== Commit
 
-An instance of `Gitt::Commits::Model` is what is answered back to when using `Gitt::Repository` via the `#commits` or `#uncommitted` methods. In each case, you'll either get an array of records, a single record, or a failure depending on the result. Here's an example of a single record:
+An instance of `Gitt::Models::Commit` is what is answered back to when using `Gitt::Repository` via the `#commits` or `#uncommitted` methods. In each case, you'll either get an array of records, a single record, or a failure depending on the result. Here's an example of a single record:
 
 [source,ruby]
 ----
-# #<struct Gitt::Commits::Model
+# #<struct Gitt::Models::Commit
 #  author_date_relative="2 days ago",
 #  author_email="demo@example.com",
 #  author_name="Demo User",
@@ -211,20 +211,20 @@ You get a {struct_link} with the following attributes:
 * `message`: Stores the entire, raw, commit message (i.e. subject and body).
 * `sha`: Stores the commit SHA.
 * `subject`: Stores the commit subject.
-* `trailers`: Stores any commit trailers as an array of `GtiPlus::Trailers::Model` records.
+* `trailers`: Stores any commit trailers as an array of `Gitt::Models::Trailer` records.
 * `trailers_index`: Stores the starting index of trailers within the commit message.
 
 ==== Tag
 
-An instance of `Gitt::Tags::Model` is what is answered back to when using `Gitt::Repository` via the `#tag_parse` method. Here's an example:
+An instance of `Gitt::Models::Tag` is what is answered back to when using `Gitt::Repository` via the `#tag_parse` method. Here's an example:
 
 [source,ruby]
 ----
-# #<struct Gitt::Tags::Model
+# #<struct Gitt::Models::Tag
 #  author_date="Tue Dec 29 17:33:01 2020 -0700",
 #  author_email="demo@example.com",
 #  author_name="Demo User",
-#  body="- Added gem skeleton\n- Added RSpec dependnecy",
+#  body="- Added gem skeleton\n- Added RSpec dependency",
 #  sha="d041d07c29f97b5b06b3b2fd05fa1dd018c7da7c",
 #  subject="Version 0.1.0",
 #  version="0.1.0">
@@ -246,7 +246,7 @@ A trailer is nested within a commit record when trailer information exists. Exam
 
 [source,ruby]
 ----
-#<struct Gitt::Commits::Trailers::Model key="Issue", delimiter=":", space=" ", value="123">
+#<struct Gitt::Models::Trailer key="Issue", delimiter=":", space=" ", value="123">
 ----
 
 The attributes break down as follows:
@@ -258,15 +258,15 @@ The attributes break down as follows:
 
 === RSpec
 
-For fans of {rspec_link}, this gem provides shared contexts you can use within your own test suites. These shared contexts are _optional_ and must be manually required to use.
+For fans of {rspec_link}, this gem provides shared contexts you can use within your own test suites. These shared contexts are _optional_, not required for you by default, and must be manually required to use.
 
 ==== Git Commit
 
-Provides a default `git_commit` record of `Gitt::Commits::Model` with minimal information for testing purposes and can be used as follows:
+Provides a default `git_commit` record of `Gitt::Models::Commit` with minimal information for testing purposes and can be used as follows:
 
 [source,ruby]
 ----
-require "gitt/shared_contexts/git_commit"
+require "gitt/rspec/shared_contexts/git_commit"
 
 describe Demo do
   include_context "with Git commit"
@@ -279,8 +279,8 @@ Provides a simple Git repository with a single commit for testing purposes. This
 
 [source,ruby]
 ----
-require "gitt/shared_contexts/git_repo"
-require "refinemenets/pathnames"
+require "gitt/rspec/shared_contexts/git_repo"
+require "refinements/pathnames"
 
 describe Demo do
   include_context "with Git repository"
@@ -299,8 +299,8 @@ Provides a temporary directory (i.e. `tmp/rspec`) for creating directories and o
 
 [source,ruby]
 ----
-require "gitt/shared_contexts/temp_dir"
-require "refinemenets/pathnames"
+require "gitt/rspec/shared_contexts/temp_dir"
+require "refinements/pathnames"
 
 describe Demo do
   include_context "with temporary directory"
