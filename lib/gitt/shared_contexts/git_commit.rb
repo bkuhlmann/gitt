@@ -7,10 +7,13 @@ RSpec.shared_context "with Git commit" do
       author_name: "Test User",
       authored_relative_at: "1 day ago",
       body: "",
+      body_lines: [],
+      body_paragraphs: [],
+      lines: [],
       raw: "",
       sha: "180dec7d8ae8cbe3565a727c63c2111e49e0b737",
       subject: "Added documentation",
-      trailers: ""
+      trailers: []
     ]
   end
 end
