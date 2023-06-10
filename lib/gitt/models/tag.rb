@@ -15,10 +15,9 @@ module Gitt
       :committer_name,
       :sha,
       :subject,
-      :version,
-      keyword_init: true
+      :version
     ) do
-      def initialize *arguments
+      def initialize(**)
         super
         freeze
       end

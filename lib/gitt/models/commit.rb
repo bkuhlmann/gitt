@@ -20,10 +20,9 @@ module Gitt
       :sha,
       :signature,
       :subject,
-      :trailers,
-      keyword_init: true
+      :trailers
     ) do
-      def initialize *arguments
+      def initialize(**)
         super
         freeze
       end

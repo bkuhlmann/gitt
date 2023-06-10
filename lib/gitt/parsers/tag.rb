@@ -23,7 +23,7 @@ module Gitt
                                    committed_at: date_sanitizer,
                                    committer_email: email_sanitizer,
                                    version: -> value { value.delete_prefix "refs/tags/" if value }
-        model[attributes]
+        model[**attributes]
       end
 
       private

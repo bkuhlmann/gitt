@@ -20,7 +20,7 @@ module Gitt
       def call content
         content.match(pattern)
                .then { |data| data ? data.named_captures : {} }
-               .then { |attributes| model[attributes] }
+               .then { |attributes| model[**attributes] }
       end
 
       private

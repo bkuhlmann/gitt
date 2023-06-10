@@ -17,7 +17,7 @@ module Gitt
         @model = model
       end
 
-      def call(content) = model[content.match(pattern).named_captures]
+      def call(content) = model[**content.match(pattern).named_captures]
 
       private
 

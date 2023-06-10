@@ -21,7 +21,7 @@ module Gitt
       def call content
         attributer.call(content)
                   .then { |attributes| process attributes }
-                  .then { |attributes| model[attributes] }
+                  .then { |attributes| model[**attributes] }
       end
 
       private

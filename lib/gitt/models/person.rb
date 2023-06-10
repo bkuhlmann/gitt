@@ -3,10 +3,10 @@
 module Gitt
   module Models
     # Represents a person within a repository.
-    Person = Struct.new :name, :delimiter, :email, keyword_init: true do
+    Person = Struct.new :name, :delimiter, :email do
       def self.for(string, parser: Parsers::Person.new) = parser.call string
 
-      def initialize *arguments
+      def initialize(**)
         super
         freeze
       end

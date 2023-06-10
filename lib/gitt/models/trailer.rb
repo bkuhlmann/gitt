@@ -6,7 +6,7 @@ module Gitt
     Trailer = Struct.new :key, :delimiter, :space, :value, keyword_init: true do
       def self.for(string, parser: Parsers::Trailer.new) = parser.call string
 
-      def initialize *arguments
+      def initialize(**)
         super
         freeze
       end
