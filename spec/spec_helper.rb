@@ -22,7 +22,7 @@ SPEC_ROOT = Pathname(__dir__).realpath.freeze
 
 using Refinements::Pathnames
 
-Pathname.require_tree Bundler.root, "lib/gitt/shared_contexts/**/*.rb"
+Pathname.require_tree Bundler.root.join("lib/gitt/shared_contexts")
 
 RSpec.configure do |config|
   include Dry::Monads[:result]
