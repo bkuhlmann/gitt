@@ -7,7 +7,7 @@ require "simplecov"
 
 unless ENV["NO_COVERAGE"]
   SimpleCov.start do
-    add_filter %r(^/(spec|lib/gitt/shared_contexts)/)
+    add_filter %r(^/(spec|lib/gitt/rspec/shared_contexts)/)
     enable_coverage :branch
     enable_coverage_for_eval
     minimum_coverage_by_file line: 95, branch: 95
@@ -22,7 +22,7 @@ SPEC_ROOT = Pathname(__dir__).realpath.freeze
 
 using Refinements::Pathnames
 
-Pathname.require_tree Bundler.root.join("lib/gitt/shared_contexts")
+Pathname.require_tree Bundler.root.join("lib/gitt/rspec/shared_contexts")
 
 RSpec.configure do |config|
   include Dry::Monads[:result]
