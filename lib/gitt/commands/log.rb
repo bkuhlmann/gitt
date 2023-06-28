@@ -34,9 +34,9 @@ module Gitt
       def call(*arguments) = shell.call "log", *arguments
 
       def index *arguments
-        arguments.prepend(pretty_format)
+        arguments.prepend("--shortstat", pretty_format)
                  .then { |pretty_format| call(*pretty_format) }
-                 .fmap { |content| String(content).scrub("?").split %("\n") }
+                 .fmap { |content| String(content).scrub("?") }
                  .fmap { |entries| build_records entries }
       end
 
@@ -58,7 +58,24 @@ module Gitt
                .then { |structure| %(--pretty=format:"#{structure}") }
       end
 
-      def build_records(entries) = entries.map { |entry| parser.call(entry) }
+      def build_records entries
+        wrap_statistics entries
+        add_empty_statistics entries
+        entries.split("<break/>").map { |entry| parser.call entry }
+      end
+
+      # :reek:UtilityFunction
+      def wrap_statistics entries
+        entries.gsub!(/\d+\sfile.+\d+\s(insertion|deletion).+\n/) do |match|
+          "<statistics>#{match}</statistics><break/>"
+        end
+      end
+
+      # :reek:UtilityFunction
+      def add_empty_statistics entries
+        entries.gsub! %(</trailers>\n"\n"<author_email>),
+                      "</trailers>\n<statistics></statistics>\n<author_email>"
+      end
     end
   end
 end

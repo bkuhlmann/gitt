@@ -34,6 +34,9 @@ RSpec.describe Gitt::Commands::Log do
         body: "",
         body_lines: [],
         body_paragraphs: [],
+        deletions: 0,
+        files_changed: 1,
+        insertions: 0,
         raw: "Added documentation\n",
         sha: /\A[0-9a-f]{40}\Z/,
         subject: "Added documentation",
@@ -190,6 +193,17 @@ RSpec.describe Gitt::Commands::Log do
       end
     end
 
+    it "answers updated statistics with file changes" do
+      git_repo_dir.change_dir do
+        `echo "Test." > README.md && git commit --amend --all --no-edit`
+        commit = command.index.success.map(&:to_h)
+
+        expect(commit).to contain_exactly(
+          hash_including(files_changed: 1, insertions: 1, deletions: 0)
+        )
+      end
+    end
+
     context "with multiple commits" do
       let :proof_one do
         hash_including(
@@ -230,6 +244,22 @@ RSpec.describe Gitt::Commands::Log do
 
           expect(commits).to contain_exactly(proof_one, proof_two)
         end
+      end
+    end
+
+    it "answers zero stats for empty commits" do
+      git_repo_dir.change_dir do
+        `git commit --allow-empty --message "----- Breakpoint -----"`
+        commits = command.index.success.map(&:to_h)
+
+        expect(commits.last).to match(
+          hash_including(
+            subject: "----- Breakpoint -----",
+            deletions: 0,
+            files_changed: 0,
+            insertions: 0
+          )
+        )
       end
     end
 
