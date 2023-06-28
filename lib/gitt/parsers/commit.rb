@@ -10,7 +10,7 @@ module Gitt
 
       def self.call(...) = new.call(...)
 
-      def initialize attributer: Attributer.with(Commands::Log::KEY_MAP.keys),
+      def initialize attributer: Attributer.with(Commands::Log::KEY_MAP.keys.append(:statistics)),
                      sanitizers: Sanitizers::CONTAINER,
                      model: Models::Commit
         @attributer = attributer
@@ -18,11 +18,14 @@ module Gitt
         @model = model
       end
 
+      # rubocop:todo Layout/LineLength
       def call content
         attributer.call(content)
                   .then { |attributes| process attributes }
+                  .then { |attributes| attributes.merge! statistic_sanitizer.call(attributes.delete(:statistics)) }
                   .then { |attributes| model[**attributes] }
       end
+      # rubocop:enable Layout/LineLength
 
       private
 
@@ -63,6 +66,8 @@ module Gitt
       def paragraphs_sanitizer = sanitizers.fetch :paragraphs
 
       def scissors_sanitizer = sanitizers.fetch :scissors
+
+      def statistic_sanitizer = sanitizers.fetch :statistic
 
       def signature_sanitizer = sanitizers.fetch :signature
 

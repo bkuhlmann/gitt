@@ -39,6 +39,9 @@ RSpec.describe Gitt::Parsers::Commit do
       committed_relative_at: "1 second ago",
       committer_email: "other@example.com",
       committer_name: "Other User",
+      deletions: 0,
+      files_changed: 0,
+      insertions: 0,
       lines: [],
       raw: "",
       sha: "180dec7d8ae8cbe3565a727c63c2111e49e0b737",
@@ -176,6 +179,17 @@ RSpec.describe Gitt::Parsers::Commit do
           Gitt::Models::Trailer[key: "a", value: "#!+"],
           Gitt::Models::Trailer[key: "issue", value: "[x-1]"]
         ]
+      )
+    end
+
+    it "answers commit with statistics" do
+      stats = "<statistics>2 files updated, 5 insertions, 10 deletions</statistics>"
+      content = "#{content_without_body}\n#{stats}"
+
+      expect(parser.call(content)).to have_attributes(
+        deletions: 10,
+        files_changed: 2,
+        insertions: 5
       )
     end
   end
