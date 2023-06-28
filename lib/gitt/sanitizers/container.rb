@@ -9,6 +9,7 @@ module Gitt
       paragraphs: Paragraphs,
       scissors: Scissors,
       signature: Signature,
+      statistic: Statistic.new,
       trailers: Trailers.new
     }.freeze
   end
