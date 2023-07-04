@@ -16,7 +16,7 @@ RSpec.describe Gitt::Models::Commit do
   describe "#find_trailer" do
     subject(:commit) { described_class[trailers: [trailer]] }
 
-    let(:trailer) { Gitt::Models::Trailer[key: "issue", delimiter: ":", space: " ", value: "123"] }
+    let(:trailer) { Gitt::Models::Trailer[key: "issue", value: "123"] }
 
     it "answers trailer for matching key" do
       expect(commit.find_trailer("issue")).to eq(Success(trailer))
@@ -34,9 +34,9 @@ RSpec.describe Gitt::Models::Commit do
 
     let :trailers do
       [
-        Gitt::Models::Trailer[key: "issue", delimiter: ":", space: " ", value: "111"],
-        Gitt::Models::Trailer[key: "format", delimiter: ":", space: " ", value: "asciidoc"],
-        Gitt::Models::Trailer[key: "issue", delimiter: ":", space: " ", value: "222"]
+        Gitt::Models::Trailer[key: "issue", value: "111"],
+        Gitt::Models::Trailer[key: "format", value: "asciidoc"],
+        Gitt::Models::Trailer[key: "issue", value: "222"]
       ]
     end
 
@@ -44,8 +44,8 @@ RSpec.describe Gitt::Models::Commit do
       expect(commit.find_trailers("issue")).to eq(
         Success(
           [
-            Gitt::Models::Trailer[key: "issue", delimiter: ":", space: " ", value: "111"],
-            Gitt::Models::Trailer[key: "issue", delimiter: ":", space: " ", value: "222"]
+            Gitt::Models::Trailer[key: "issue", value: "111"],
+            Gitt::Models::Trailer[key: "issue", value: "222"]
           ]
         )
       )

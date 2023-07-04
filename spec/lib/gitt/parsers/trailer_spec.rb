@@ -36,8 +36,8 @@ RSpec.describe Gitt::Parsers::Trailer do
     it "answers empty record for invalid content" do
       expect(parser.call("bogus")).to have_attributes(
         key: nil,
-        delimiter: nil,
-        space: nil,
+        delimiter: ":",
+        space: " ",
         value: nil
       )
     end

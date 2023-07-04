@@ -11,8 +11,8 @@ RSpec.describe Gitt::Sanitizers::Trailers do
 
       expect(sanitizer.call(content)).to eq(
         [
-          Gitt::Models::Trailer[key: "One", delimiter: ":", space: " ", value: "1"],
-          Gitt::Models::Trailer[key: "Two", delimiter: ":", space: " ", value: "2"]
+          Gitt::Models::Trailer[key: "One", value: "1"],
+          Gitt::Models::Trailer[key: "Two", value: "2"]
         ]
       )
     end

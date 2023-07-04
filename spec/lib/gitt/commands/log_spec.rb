@@ -123,8 +123,8 @@ RSpec.describe Gitt::Commands::Log do
             sha: /\A[0-9a-f]{40}\Z/,
             subject: "Added test",
             trailers: [
-              Gitt::Models::Trailer[key: "One", delimiter: ":", space: " ", value: "1"],
-              Gitt::Models::Trailer[key: "Two", delimiter: ":", space: " ", value: "2"]
+              Gitt::Models::Trailer[key: "One", value: "1"],
+              Gitt::Models::Trailer[key: "Two", value: "2"]
             ]
           )
         )
@@ -161,7 +161,7 @@ RSpec.describe Gitt::Commands::Log do
           sha: /\A[0-9a-f]{40}\Z/,
           subject: "Added test",
           trailers: [
-            Gitt::Models::Trailer[key: "One", delimiter: ":", space: " ", value: "1"]
+            Gitt::Models::Trailer[key: "One", value: "1"]
           ]
         )
       end
@@ -272,8 +272,8 @@ RSpec.describe Gitt::Commands::Log do
           sha: /\A\h{40}\Z/,
           subject: "Added example",
           trailers: [
-            Gitt::Models::Trailer[key: "One", delimiter: ":", space: " ", value: "1"],
-            Gitt::Models::Trailer[key: "Two", delimiter: ":", space: " ", value: "2"]
+            Gitt::Models::Trailer[key: "One", value: "1"],
+            Gitt::Models::Trailer[key: "Two", value: "2"]
           ]
         )
       end

@@ -131,8 +131,8 @@ RSpec.describe Gitt::Parsers::Commit do
 
     it "answers commit body lines, paragraphs, and trailers" do
       content = <<~CONTENT
-        <body>One.\n\nOne: 1\nTwo: 2\n</body>
-        <trailers>One: 1\nTwo: 2\n</trailers>
+        <body>One.\n\none: 1\ntwo: 2\n</body>
+        <trailers>one: 1\ntwo: 2\n</trailers>
       CONTENT
 
       expect(parser.call(content)).to have_attributes(
@@ -140,16 +140,16 @@ RSpec.describe Gitt::Parsers::Commit do
         body_lines: ["One."],
         body_paragraphs: ["One."],
         trailers: [
-          Gitt::Models::Trailer[key: "One", delimiter: ":", space: " ", value: "1"],
-          Gitt::Models::Trailer[key: "Two", delimiter: ":", space: " ", value: "2"]
+          Gitt::Models::Trailer[key: "one", value: "1"],
+          Gitt::Models::Trailer[key: "two", value: "2"]
         ]
       )
     end
 
     it "answers commit body lines and paragraphs with trailers and suffixed comments" do
       content = <<~CONTENT
-        <body>One.\n\nOne: 1\n\n# One.\n\n# Two.\n</body>
-        <trailers>One: 1\n</trailers>
+        <body>One.\n\none: 1\n\n# One.\n\n# Two.\n</body>
+        <trailers>one: 1\n</trailers>
       CONTENT
 
       expect(parser.call(content)).to have_attributes(
@@ -157,15 +157,15 @@ RSpec.describe Gitt::Parsers::Commit do
         body_lines: ["One.", "", "# One.", "", "# Two."],
         body_paragraphs: ["One.", "# One.", "# Two."],
         trailers: [
-          Gitt::Models::Trailer[key: "One", delimiter: ":", space: " ", value: "1"]
+          Gitt::Models::Trailer[key: "one", value: "1"]
         ]
       )
     end
 
     it "answers commit trailers with special characters" do
       content = <<~CONTENT
-        <body>One.\n\nA: #!+\nIssue: [x-1]\n</body>
-        <trailers>A: #!+\nIssue: [x-1]\n</trailers>
+        <body>One.\n\na: #!+\nissue: [x-1]\n</body>
+        <trailers>a: #!+\nissue: [x-1]\n</trailers>
       CONTENT
 
       expect(parser.call(content)).to have_attributes(
@@ -173,8 +173,8 @@ RSpec.describe Gitt::Parsers::Commit do
         body_lines: ["One."],
         body_paragraphs: ["One."],
         trailers: [
-          Gitt::Models::Trailer[key: "A", delimiter: ":", space: " ", value: "#!+"],
-          Gitt::Models::Trailer[key: "Issue", delimiter: ":", space: " ", value: "[x-1]"]
+          Gitt::Models::Trailer[key: "a", value: "#!+"],
+          Gitt::Models::Trailer[key: "issue", value: "[x-1]"]
         ]
       )
     end

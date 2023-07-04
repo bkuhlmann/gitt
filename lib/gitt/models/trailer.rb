@@ -3,15 +3,14 @@
 module Gitt
   module Models
     # Represents commit trailer details.
-    Trailer = Struct.new :key, :delimiter, :space, :value, keyword_init: true do
+    Trailer = Data.define :key, :delimiter, :space, :value do
       def self.for(string, parser: Parsers::Trailer.new) = parser.call string
 
-      def initialize(**)
+      def initialize key:, value:, delimiter: ":", space: " "
         super
-        freeze
       end
 
-      def to_s = values.join
+      def to_s = to_h.values.join
     end
   end
 end
