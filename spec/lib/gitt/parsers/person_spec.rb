@@ -10,18 +10,27 @@ RSpec.describe Gitt::Parsers::Person do
       expect(parser.call("Jane Doe <jdoe@example.com>")).to eq(
         Gitt::Models::Person[
           name: "Jane Doe",
-          delimiter: " ",
-          email: "<jdoe@example.com>"
+          email: "jdoe@example.com"
         ]
       )
     end
 
-    it "answers record for partial content" do
-      expect(parser.call("bogus")).to eq(Gitt::Models::Person[name: "bogus", delimiter: ""])
+    it "answers record for first name only" do
+      expect(parser.call("Jane")).to eq(Gitt::Models::Person[name: "Jane"])
     end
 
-    it "answers record for empty content" do
-      expect(parser.call("")).to eq(Gitt::Models::Person[name: "", delimiter: ""])
+    it "answers record for full name only" do
+      expect(parser.call("Jane Doe")).to eq(Gitt::Models::Person[name: "Jane Doe"])
+    end
+
+    it "answers record for email only" do
+      expect(parser.call("<jdoe@example.com>")).to eq(
+        Gitt::Models::Person[email: "jdoe@example.com"]
+      )
+    end
+
+    it "answers empty record for empty content" do
+      expect(parser.call("")).to eq(Gitt::Models::Person.new)
     end
   end
 end
