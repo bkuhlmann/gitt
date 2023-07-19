@@ -22,18 +22,12 @@ module Gitt
       :subject,
       :trailers
     ) do
+      include Directable
+
       def initialize(**)
         super
         freeze
       end
-
-      def amend? = subject.match?(/\Aamend!\s/)
-
-      def fixup? = subject.match?(/\Afixup!\s/)
-
-      def squash? = subject.match?(/\Asquash!\s/)
-
-      def prefix? = amend? || fixup? || squash?
     end
   end
 end
