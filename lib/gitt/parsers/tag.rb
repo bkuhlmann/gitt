@@ -8,7 +8,7 @@ module Gitt
     class Tag
       using Refinements::Hashes
 
-      def initialize attributer: Attributer.with(Commands::Tag::KEY_MAP.keys),
+      def initialize attributer: Attributer.new(Commands::Tag::KEY_MAP.keys),
                      sanitizers: Sanitizers::CONTAINER,
                      model: Models::Tag
         @attributer = attributer

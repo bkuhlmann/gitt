@@ -15,13 +15,6 @@ RSpec.describe Gitt::Parsers::Attributer do
     DATA
   end
 
-  describe ".with" do
-    it "answers instance with custom keys" do
-      attributes = described_class.with(%i[one two]).call "<one>1</one><two>2</two>"
-      expect(attributes).to eq(one: "1", two: "2")
-    end
-  end
-
   describe "#call" do
     it "answers all attributes for content" do
       expect(parser.call(content)).to eq(header: "Example", body: "Test.", footer: "End")

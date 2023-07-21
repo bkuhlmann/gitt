@@ -10,7 +10,7 @@ module Gitt
 
       def self.call(...) = new.call(...)
 
-      def initialize attributer: Attributer.with(Commands::Log::KEY_MAP.keys.append(:statistics)),
+      def initialize attributer: Attributer.new(Commands::Log::KEY_MAP.keys.append(:statistics)),
                      sanitizers: Sanitizers::CONTAINER,
                      model: Models::Commit
         @attributer = attributer
