@@ -13,16 +13,20 @@ module Gitt
       end
 
       def call content
-        scrub = String(content).scrub "?"
-
-        keys.reduce({}) do |attributes, key|
-          attributes.merge key => scrub[%r(<#{key}>(?<value>.*?)</#{key}>)m, :value]
-        end
+        build String(content)
+      rescue ArgumentError => error
+        error.message.include?("invalid byte") ? build(content.scrub("?")) : raise
       end
 
       private
 
       attr_reader :keys
+
+      def build content
+        keys.each.with_object({}) do |key, attributes|
+          attributes[key] = content[%r(<#{key}>(?<value>.*?)</#{key}>)m, :value]
+        end
+      end
     end
   end
 end
