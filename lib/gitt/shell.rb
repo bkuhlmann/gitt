@@ -12,8 +12,8 @@ module Gitt
       @client = client
     end
 
-    def call(...)
-      client.capture3("git", ...).then do |stdout, stderr, status|
+    def call(*, **)
+      client.capture3("git", *, **).then do |stdout, stderr, status|
         status.success? ? Success(stdout) : Failure(stderr)
       end
     end
