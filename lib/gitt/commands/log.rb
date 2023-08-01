@@ -18,6 +18,8 @@ module Gitt
         committed_relative_at: "%cr",
         committer_email: "%ce",
         committer_name: "%cn",
+        encoding: "%e",
+        notes: "%N",
         raw: "%B",
         sha: "%H",
         signature: "%G?",
