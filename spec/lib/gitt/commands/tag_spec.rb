@@ -97,10 +97,6 @@ RSpec.describe Gitt::Commands::Tag do
   end
 
   describe "#last" do
-    it "answers SHA of first commit when no tags exist" do
-      git_repo_dir.change_dir { expect(command.last).to match(Success(/[0-9a-f]{40}/)) }
-    end
-
     it "answers last tag when tag exists" do
       git_repo_dir.change_dir do
         `touch test.txt && git add . && git commit --message "Added test file" && git tag 0.1.0`
@@ -108,11 +104,15 @@ RSpec.describe Gitt::Commands::Tag do
       end
     end
 
-    it "fails when last tag can't be obtained" do
-      git_repo_dir.remove_tree.make_dir.change_dir do
-        `git init`
-        expect(command.last).to eq(Failure("Not a valid object name HEAD"))
-      end
+    it "answers failure when no tags exist" do
+      git_repo_dir.change_dir { expect(command.last).to eq(Failure("No tags found.")) }
+    end
+
+    it "answers failure when last tag can't be obtained" do
+      shell = instance_double Gitt::Shell, call: Failure("fatal: Danger!")
+      command = described_class.new(shell:)
+
+      expect(command.last).to eq(Failure("Danger!"))
     end
   end
 

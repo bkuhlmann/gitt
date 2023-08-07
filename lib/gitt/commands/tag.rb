@@ -53,9 +53,15 @@ module Gitt
       end
 
       def last
-        shell.call("describe", "--abbrev=0", "--tags", "--always")
+        shell.call("describe", "--abbrev=0", "--tags")
              .fmap(&:strip)
-             .or { |error| Failure error.delete_prefix("fatal: ").chomp }
+             .or do |error|
+               if error.match?(/no names found/i)
+                 Failure "No tags found."
+               else
+                 Failure error.delete_prefix("fatal: ").chomp
+               end
+             end
       end
 
       def local? version
