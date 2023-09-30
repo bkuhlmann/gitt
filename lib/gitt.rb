@@ -12,4 +12,6 @@ end
 # Main namespace.
 module Gitt
   SHELL = Shell.new.freeze
+
+  def self.loader(registry = Zeitwerk::Registry) = registry.loader_for __FILE__
 end
