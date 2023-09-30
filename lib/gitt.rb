@@ -2,9 +2,10 @@
 
 require "zeitwerk"
 
-Zeitwerk::Loader.for_gem.then do |loader|
+Zeitwerk::Loader.new.then do |loader|
   loader.inflector.inflect "container" => "CONTAINER"
-  loader.ignore "#{__dir__}/gitt/rspec/shared_contexts"
+  loader.tag = File.basename __FILE__, ".rb"
+  loader.push_dir __dir__
   loader.setup
 end
 
