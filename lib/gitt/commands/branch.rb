@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require "dry/monads"
+
 module Gitt
   module Commands
     # A Git branch command wrapper.
     class Branch
+      include Dry::Monads[:result]
+
       def initialize shell: SHELL
         @shell = shell
       end
@@ -12,6 +16,7 @@ module Gitt
         shell.call("config", "init.defaultBranch")
              .fmap(&:chomp)
              .fmap { |name| name.empty? ? "main" : name }
+             .or(Success("main"))
       end
 
       def call(*arguments) = shell.call "branch", *arguments
