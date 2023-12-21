@@ -1,5 +1,10 @@
 = Versions
 
+== 2.2.0 (2023-12-20)
+
+* Fixed blank default branch detection - Brooke Kuhlmann
+* Added branch default fallback - Brooke Kuhlmann
+
 == 2.1.1 (2023-11-15)
 
 * Fixed gem loader to find by tag and cache instance - Brooke Kuhlmann

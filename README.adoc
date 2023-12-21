@@ -75,7 +75,7 @@ git.uncommitted     # Parses a file and answers an unsaved commit message.
 === Commands
 
 Should you want to use individual commands instead of interacting with the `Repository` object, you
-can leverage any of the objects in the `Commands` namespace which -- at a minimum -- use the link:https://alchemists.io/articles/interactor_pattern[Command Pattern]. Here are the _select_ commands which are enhanced further:
+can leverage any of the objects in the `Commands` namespace which -- at a minimum -- use the link:https://alchemists.io/articles/interactor_pattern[Command Pattern]. Here are the specific commands which are enhanced further:
 
 ==== link:https://git-scm.com/docs/git-branch[Branch]
 
@@ -85,8 +85,11 @@ Handles branches.
 ----
 branch = Gitt::Commands::Branch.new
 
-# Answers branch default (via Git `init.defaultBranch` configuration).
+# Answers branch default (via Git `init.defaultBranch` configuration) of if blank.
 branch.default  # Success "main"
+
+# Answers branch default fallback if unset or error is detected.
+branch.default "source"  # Success "source"
 
 # Accepts any argument you'd send to `git branch`. Example:
 branch.call "--list"  # Success "  main\n"
