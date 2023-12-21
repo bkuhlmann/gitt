@@ -19,6 +19,13 @@ RSpec.describe Gitt::Repository do
     it "answers branch default" do
       git_repo_dir.change_dir { expect(repository.branch_default).to eq(Success("main")) }
     end
+
+    it "answers branch fallback" do
+      git_repo_dir.change_dir do
+        `git config --add init.defaultBranch ""`
+        expect(repository.branch_default("other")).to eq(Success("other"))
+      end
+    end
   end
 
   describe "#branch_name" do

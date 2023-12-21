@@ -20,7 +20,7 @@ module Gitt
 
     def branch(...) = commands.fetch(__method__).call(...)
 
-    def branch_default = commands.fetch(:branch).default
+    def branch_default(...) = commands.fetch(:branch).default(...)
 
     def branch_name = commands.fetch(:branch).name
 

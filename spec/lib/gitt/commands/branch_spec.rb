@@ -17,6 +17,13 @@ RSpec.describe Gitt::Commands::Branch do
       end
     end
 
+    it "answers custom fallback when undefined" do
+      git_repo_dir.change_dir do
+        `git config --add init.defaultBranch ""`
+        expect(command.default("other")).to eq(Success("other"))
+      end
+    end
+
     it "answers main branch when failure" do
       shell = instance_double Gitt::Shell
       command = described_class.new(shell:)
