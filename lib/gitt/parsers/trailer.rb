@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
-require "refinements/hashes"
-
 module Gitt
   module Parsers
     # Parses raw trailer data to produce a trailer record.
     class Trailer
-      using Refinements::Hashes
-
       PATTERN = /
         (?<key>\A.+)         # Key (anchored to start of line).
         (?<delimiter>:)      # Colon delimiter.
@@ -24,8 +20,8 @@ module Gitt
 
       def call content
         content.match(pattern)
-               .then { |data| data ? data.named_captures : empty }
-               .then { |attributes| model[**attributes.symbolize_keys!] }
+               .then { |data| data ? data.named_captures(symbolize_names: true) : empty }
+               .then { |attributes| model[**attributes] }
       end
 
       private
