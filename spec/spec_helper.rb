@@ -19,7 +19,7 @@ require "refinements"
 
 SPEC_ROOT = Pathname(__dir__).realpath.freeze
 
-using Refinements::Pathnames
+using Refinements::Pathname
 
 Pathname.require_tree Bundler.root.join("lib/gitt/rspec/shared_contexts")
 

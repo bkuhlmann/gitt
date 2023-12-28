@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "refinements/hashes"
+require "refinements/hash"
 
 module Gitt
   module Parsers
     # Parses raw commit information to produce a commit record.
     class Commit
-      using Refinements::Hashes
+      using Refinements::Hash
 
       def self.call(...) = new.call(...)
 

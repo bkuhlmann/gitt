@@ -7,7 +7,7 @@ RSpec.describe Gitt::Commands::Config do
 
   include_context "with Git repository"
 
-  using Refinements::Pathnames
+  using Refinements::Pathname
 
   let(:environment) { ENV }
 

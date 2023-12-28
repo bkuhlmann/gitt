@@ -3,7 +3,7 @@
 RSpec.shared_context "with Git repository" do
   include_context "with temporary directory"
 
-  using Refinements::Pathnames
+  using Refinements::Pathname
 
   let(:git_repo_dir) { temp_dir.join "test" }
 

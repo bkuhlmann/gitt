@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "refinements/hashes"
+require "refinements/hash"
 
 module Gitt
   module Parsers
     # Parses raw tag information to produce a tag record.
     class Tag
-      using Refinements::Hashes
+      using Refinements::Hash
 
       def initialize attributer: Attributer.new(Commands::Tag::KEY_MAP.keys),
                      sanitizers: Sanitizers::CONTAINER,

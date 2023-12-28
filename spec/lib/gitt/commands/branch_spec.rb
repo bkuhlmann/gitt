@@ -7,7 +7,7 @@ RSpec.describe Gitt::Commands::Branch do
 
   include_context "with Git repository"
 
-  using Refinements::Pathnames
+  using Refinements::Pathname
 
   describe "#default" do
     it "answers main branch when undefined" do

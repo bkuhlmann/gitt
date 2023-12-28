@@ -7,7 +7,7 @@ RSpec.describe Gitt::Commands::Log do
 
   include_context "with Git repository"
 
-  using Refinements::Pathnames
+  using Refinements::Pathname
 
   describe "#call" do
     it "answers log with default arguments" do

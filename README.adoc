@@ -283,12 +283,12 @@ Provides a simple Git repository with a single commit for testing purposes. This
 [source,ruby]
 ----
 require "gitt/rspec/shared_contexts/git_repo"
-require "refinements/pathnames"
+require "refinements/pathname"
 
 describe Demo do
   include_context "with Git repository"
 
-  using Refinements::Pathnames
+  using Refinements::Pathname
 
   it "is a demo" do
     git_repo_dir.change_dir { # Your expectation goes here. }
@@ -303,12 +303,12 @@ Provides a temporary directory (i.e. `tmp/rspec`) for creating directories and o
 [source,ruby]
 ----
 require "gitt/rspec/shared_contexts/temp_dir"
-require "refinements/pathnames"
+require "refinements/pathname"
 
 describe Demo do
   include_context "with temporary directory"
 
-  using Refinements::Pathnames
+  using Refinements::Pathname
 
   it "is a demo" do
     temp_dir.change_dir { # Your expectation goes here. }

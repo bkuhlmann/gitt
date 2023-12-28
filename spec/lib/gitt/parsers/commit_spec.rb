@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Gitt::Parsers::Commit do
-  using Refinements::Structs
+  using Refinements::Struct
 
   subject(:parser) { described_class.new }
 

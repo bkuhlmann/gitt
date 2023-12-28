@@ -7,7 +7,7 @@ RSpec.describe Gitt::Repository do
 
   include_context "with Git repository"
 
-  using Refinements::Pathnames
+  using Refinements::Pathname
 
   describe "#branch" do
     it "answers main branch" do

@@ -7,7 +7,7 @@ RSpec.describe Gitt::Commands::Tag do
 
   include_context "with Git repository"
 
-  using Refinements::Pathnames
+  using Refinements::Pathname
 
   shared_examples "a tag" do |method|
     it "fails when there is no version" do
