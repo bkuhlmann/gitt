@@ -31,7 +31,7 @@ module Gitt
         @parser = parser
       end
 
-      def call(*arguments) = shell.call "tag", *arguments
+      def call(*) = shell.call("tag", *)
 
       def create version, body = Core::EMPTY_STRING, *flags
         return Failure "Unable to create Git tag without version." unless version

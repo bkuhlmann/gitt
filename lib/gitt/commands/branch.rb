@@ -19,7 +19,7 @@ module Gitt
              .or(Success(fallback))
       end
 
-      def call(*arguments) = shell.call "branch", *arguments
+      def call(*) = shell.call("branch", *)
 
       def name = shell.call("rev-parse", "--abbrev-ref", "HEAD").fmap(&:chomp)
 

@@ -33,7 +33,7 @@ module Gitt
         @parser = parser
       end
 
-      def call(*arguments) = shell.call "log", *arguments
+      def call(*) = shell.call("log", *)
 
       def index *arguments
         arguments.prepend("--shortstat", pretty_format)
