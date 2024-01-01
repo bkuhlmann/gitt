@@ -24,7 +24,7 @@ toc::[]
 == Features
 
 * Wraps a subset of native {git_link} commands with additional enhancements to improve your working experience.
-* Answers link:https://dry-rb.org/gems/dry-monads[monads] you can pipe together -- or link:https://alchemists.io/projects/transactable[transact] -- for more powerful and complex workflows.
+* Answers link:https://dry-rb.org/gems/dry-monads[monads] you can link:https://alchemists.io/projects/transactable[pipe] together for more complex workflows.
 * Provides _optional_ {rspec_link} shared contexts that speed up the testing of your own Git related implementations.
 
 == Requirements
@@ -65,11 +65,13 @@ git.tag?            # Answers if local or remote tag exists.
 git.tag_create      # Create a new tag.
 git.tag_last        # Answers last tag created.
 git.tag_local?      # Answers if local tag exists?
-git.tag_parse       # Parses and answers a tag record.
 git.tag_remote?     # Answers if remote tag exists?
+git.tag_show        # Answers information about a single tag.
 git.tagged?         # Answers if the repository has any tags.
+git.tags            # Answers all tags.
 git.tags_push       # Pushes local tags to remote git.
 git.uncommitted     # Parses a file and answers an unsaved commit message.
+
 ----
 
 === Commands
@@ -160,6 +162,9 @@ tag = Gitt::Commands::Tag.new
 # Example: tag.call "--list"
 stdout, stderr, status = tag.call
 
+# Creates a new tag.
+tag.create "0.0.0", "Version 0.0.0"
+
 # Answers true or false base on whether local and remote tag exist.
 tag.exist? "0.1.0"
 
@@ -174,6 +179,9 @@ tag.push
 
 # Answers if remote tag exists.
 tag.remote? "0.1.0"
+
+# Answers details about a specific tag.
+tag.show "1.0.0"
 
 # Answers true or false based on whether repository is tagged.
 tag.tagged?
@@ -224,21 +232,31 @@ An instance of `Gitt::Models::Tag` is what is answered back to when using `Gitt:
 [source,ruby]
 ----
 # #<struct Gitt::Models::Tag
-#  author_date="Tue Dec 29 17:33:01 2020 -0700",
 #  author_email="demo@example.com",
-#  author_name="Demo User",
-#  body="- Added gem skeleton\n- Added RSpec dependency",
-#  sha="d041d07c29f97b5b06b3b2fd05fa1dd018c7da7c",
-#  subject="Version 0.1.0",
-#  version="0.1.0">
+#  author_name="Brooke Kuhlmann",
+#  authored_at="1671892451",
+#  authored_relative_at="1 year ago",
+#  body="A demo body.",
+#  committed_at="1671997684",
+#  committed_relative_at="1 year ago",
+#  committer_email="demo@example.com",
+#  committer_name="Brooke Kuhlmann",
+#  sha="662f32b2846c7bd4f153560478f035197f5279d5",
+#  subject="Version 1.0.0",
+#  version="1.0.0">
 ----
 
 You get a {struct_link} with the following attributes:
 
-*  `author_date`: Stores author creation date.
 *  `author_email`: Stores author email.
 *  `author_name`: Store author name.
+*  `authored_at`: Stores author creation date.
+*  `authored_relative_at`: Stores author creation date relative to current time.
 *  `body`: Stores body of tag which can be sentences, multiple paragraphs, and/or signature information.
+*  `committer_email`: Stores committer email.
+*  `committer_name`: Store committer name.
+*  `committed_at`: Stores committer creation date.
+*  `committed_relative_at`: Stores committer creation date relative to current time.
 *  `sha`: Stores the commit SHA for which this tag labels
 *  `subject`: Stores the subject.
 *  `version`: Stores the version.

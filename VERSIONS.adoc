@@ -1,5 +1,31 @@
 = Versions
 
+== 3.0.0 (2024-01-01)
+
+* Fixed attributer parser to avoid unnecessary scrubbing - Brooke Kuhlmann
+* Fixed empty strings for sanitizers - Brooke Kuhlmann
+* Fixed shell to only accept positional and keyword arguments - Brooke Kuhlmann
+* Fixed tag command to answer failure when last tag can't be found - Brooke Kuhlmann
+* Added commit encoding and note attributes - Brooke Kuhlmann
+* Added commit model statistics - Brooke Kuhlmann
+* Added commit trailer find methods - Brooke Kuhlmann
+* Added directable module - Brooke Kuhlmann
+* Added primary interface - Brooke Kuhlmann
+* Added statistic sanitizer - Brooke Kuhlmann
+* Added statistics to commit parser - Brooke Kuhlmann
+* Updated Circle CI step names - Brooke Kuhlmann
+* Updated commit model to be directable - Brooke Kuhlmann
+* Updated gem dependencies - Brooke Kuhlmann
+* Updated log command to include statistics - Brooke Kuhlmann
+* Updated person model to be a data object - Brooke Kuhlmann
+* Updated to Ruby 3.3.0 - Brooke Kuhlmann
+* Updated trailer model to be a data object - Brooke Kuhlmann
+* Removed Gemfile code prefix from quality group - Brooke Kuhlmann
+* Removed Rakefile code prefix from quality task - Brooke Kuhlmann
+* Removed attributer parser with message - Brooke Kuhlmann
+* Removed commit parser call singleton - Brooke Kuhlmann
+* Refactored forwarding of arguments for commands - Brooke Kuhlmann
+
 == 2.2.0 (2023-12-20)
 
 * Fixed blank default branch detection - Brooke Kuhlmann
