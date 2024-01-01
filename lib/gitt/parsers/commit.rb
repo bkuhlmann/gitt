@@ -8,8 +8,6 @@ module Gitt
     class Commit
       using Refinements::Hash
 
-      def self.call(...) = new.call(...)
-
       def initialize attributer: Attributer.new(Commands::Log::KEY_MAP.keys.append(:statistics)),
                      sanitizers: Sanitizers::CONTAINER,
                      model: Models::Commit

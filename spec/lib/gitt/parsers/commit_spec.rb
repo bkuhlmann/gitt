@@ -51,12 +51,6 @@ RSpec.describe Gitt::Parsers::Commit do
     ]
   end
 
-  describe ".call" do
-    it "answers parsed commit" do
-      expect(described_class.call(content_without_body)).to eq(commit_without_body)
-    end
-  end
-
   describe "#call" do
     it "answers commit without body" do
       expect(parser.call(content_without_body)).to eq(commit_without_body)

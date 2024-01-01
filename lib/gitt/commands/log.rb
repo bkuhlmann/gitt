@@ -27,7 +27,7 @@ module Gitt
         trailers: "%(trailers)"
       }.freeze
 
-      def initialize shell: SHELL, key_map: KEY_MAP, parser: Parsers::Commit
+      def initialize shell: SHELL, key_map: KEY_MAP, parser: Parsers::Commit.new
         @shell = shell
         @key_map = key_map
         @parser = parser
