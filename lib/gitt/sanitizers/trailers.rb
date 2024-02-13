@@ -8,7 +8,11 @@ module Gitt
         @parser = parser
       end
 
-      def call(value) = String(value).split("\n").map { |text| parser.call text }
+      def call value
+        String(value).split("\n")
+                     .map { |text| parser.call text }
+                     .reject(&:empty?)
+      end
 
       private
 
