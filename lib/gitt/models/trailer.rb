@@ -10,6 +10,8 @@ module Gitt
         super
       end
 
+      def empty? = String(key).empty? || String(value).empty?
+
       def to_s = to_h.values.join
     end
   end

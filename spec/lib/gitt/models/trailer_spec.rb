@@ -25,4 +25,26 @@ RSpec.describe Gitt::Models::Trailer do
       expect(described_class[key: nil, delimiter: nil, space: nil, value: nil].to_s).to eq("")
     end
   end
+
+  describe "#empty?" do
+    it "answers true when key is nil and value exists" do
+      expect(described_class[key: nil, value: "abc"].empty?).to be(true)
+    end
+
+    it "answers true when key is blank and value exists" do
+      expect(described_class[key: "", value: "abc"].empty?).to be(true)
+    end
+
+    it "answers true when key exists but value is missing" do
+      expect(described_class[key: "key", value: nil].empty?).to be(true)
+    end
+
+    it "answers true when key exists but value is blank" do
+      expect(described_class[key: "key", value: ""].empty?).to be(true)
+    end
+
+    it "answers false when key and value exist" do
+      expect(described_class[key: "key", value: "value"].empty?).to be(false)
+    end
+  end
 end
