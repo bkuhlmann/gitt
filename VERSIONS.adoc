@@ -1,5 +1,10 @@
 = Versions
 
+== 3.1.1 (2024-02-18)
+
+* ✅ Fixed log command spec to ignore comments after trailers - Brooke Kuhlmann
+* ✅ Fixed trailer parser to be efficient with empty records - Brooke Kuhlmann
+
 == 3.1.0 (2024-02-12)
 
 * 🟢 Added repl_type_completor gem - Brooke Kuhlmann
