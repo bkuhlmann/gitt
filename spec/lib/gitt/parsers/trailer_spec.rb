@@ -33,6 +33,15 @@ RSpec.describe Gitt::Parsers::Trailer do
       )
     end
 
+    it "answers empty record for comment" do
+      expect(parser.call("# A comment line.")).to have_attributes(
+        key: nil,
+        delimiter: ":",
+        space: " ",
+        value: nil
+      )
+    end
+
     it "answers empty record for invalid content" do
       expect(parser.call("bogus")).to have_attributes(
         key: nil,
