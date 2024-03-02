@@ -4,6 +4,6 @@ require "core"
 
 module Gitt
   module Sanitizers
-    Scissors = -> value { value.sub(/^#\s-.+\s>8\s-.+/m, Core::EMPTY_STRING) if value }
+    Scissors = -> text { text.sub(/^#\s-.+\s>8\s-.+/m, Core::EMPTY_STRING) if text }
   end
 end

@@ -8,10 +8,10 @@ module Gitt
         @parser = parser
       end
 
-      def call value
-        String(value).split("\n")
-                     .map { |text| parser.call text }
-                     .reject(&:empty?)
+      def call text
+        String(text).split("\n")
+                    .map { |line| parser.call line }
+                    .reject(&:empty?)
       end
 
       private

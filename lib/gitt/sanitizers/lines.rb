@@ -4,6 +4,6 @@ require "core"
 
 module Gitt
   module Sanitizers
-    Lines = -> value { value ? value.split("\n") : Core::EMPTY_ARRAY }
+    Lines = -> text { text ? text.split("\n") : Core::EMPTY_ARRAY }
   end
 end

@@ -4,6 +4,6 @@ require "core"
 
 module Gitt
   module Sanitizers
-    Date = -> value { value.sub(/\s.+\Z/, Core::EMPTY_STRING) if value }
+    Date = -> text { text.sub(/\s.+\Z/, Core::EMPTY_STRING) if text }
   end
 end

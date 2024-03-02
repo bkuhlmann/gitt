@@ -4,6 +4,6 @@ require "core"
 
 module Gitt
   module Sanitizers
-    Email = -> value { value.tr "<>", Core::EMPTY_STRING if value }
+    Email = -> text { text.tr "<>", Core::EMPTY_STRING if text }
   end
 end

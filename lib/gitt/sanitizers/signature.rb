@@ -2,8 +2,8 @@
 
 module Gitt
   module Sanitizers
-    Signature = lambda do |value|
-      case value
+    Signature = lambda do |text|
+      case text
         when "B" then "Bad"
         when "E" then "Error"
         when "G" then "Good"
