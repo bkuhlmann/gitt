@@ -7,7 +7,7 @@ RSpec.describe Gitt::Parsers::Commit do
 
   subject(:parser) { described_class.new }
 
-  let :content_without_body do
+  let :content do
     <<~CONTENT
       <author_email>test@example.com</author_email>
       <author_name>Test User</author_name>
@@ -26,7 +26,7 @@ RSpec.describe Gitt::Parsers::Commit do
     CONTENT
   end
 
-  let :commit_without_body do
+  let :commit do
     Gitt::Models::Commit[
       author_email: "test@example.com",
       author_name: "Test User",
@@ -52,11 +52,11 @@ RSpec.describe Gitt::Parsers::Commit do
   end
 
   describe "#call" do
-    it "answers commit without body" do
-      expect(parser.call(content_without_body)).to eq(commit_without_body)
+    it "answers without body" do
+      expect(parser.call(content)).to eq(commit)
     end
 
-    it "answers commit body lines and paragraphs with single body line" do
+    it "answers body lines and paragraphs with single body line" do
       expect(parser.call("<body>Test.\n</body>")).to have_attributes(
         body: "Test.",
         body_lines: ["Test."],
@@ -64,7 +64,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers commit body lines and paragraphs with multiple body lines" do
+    it "answers body lines and paragraphs with multiple body lines" do
       expect(parser.call("<body>One.\nTwo.\nThree.\n</body>")).to have_attributes(
         body: "One.\nTwo.\nThree.",
         body_lines: ["One.", "Two.", "Three."],
@@ -72,7 +72,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers commit body lines and paragraphs with embedded comments" do
+    it "answers body lines and paragraphs with embedded comments" do
       expect(parser.call("<body>One.\n# Test.\nTwo.\n\nThree.\n</body>")).to have_attributes(
         body: "One.\n# Test.\nTwo.\n\nThree.",
         body_lines: ["One.", "# Test.", "Two.", "", "Three."],
@@ -80,7 +80,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers commit body lines and paragraphs with paragraphs" do
+    it "answers body lines and paragraphs with paragraphs" do
       expect(parser.call("<body>One.\n\nTwo.\n\nThree.\n</body>")).to have_attributes(
         body: "One.\n\nTwo.\n\nThree.",
         body_lines: ["One.", "", "Two.", "", "Three."],
@@ -88,7 +88,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers commit body lines and paragraphs with multiple paragraphs" do
+    it "answers body lines and paragraphs with multiple paragraphs" do
       body = "One A.\nOne B.\n\nTwo A.\nTwo B.\n\nThree."
 
       expect(parser.call("<body>#{body}</body>")).to have_attributes(
@@ -106,7 +106,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers empty commit body lines and paragraphs with commented paragraphs only" do
+    it "answers empty body lines and paragraphs with commented paragraphs only" do
       body = "# One.\n\n# Two.\n\n# Three."
 
       expect(parser.call("<body>#{body}</body>")).to have_attributes(
@@ -116,7 +116,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers commit body lines and paragraphs with mixed paragraphs of comments and text" do
+    it "answers body lines and paragraphs with mixed paragraphs of comments and text" do
       body = "One.\n\n# Two A.\n# Two B.\n\nThree."
 
       expect(parser.call("<body>#{body}</body>")).to have_attributes(
@@ -126,7 +126,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers commit body lines, paragraphs, and trailers" do
+    it "answers body lines, paragraphs, and trailers" do
       content = <<~CONTENT
         <body>One.\n\none: 1\ntwo: 2\n</body>
         <trailers>one: 1\ntwo: 2\n</trailers>
@@ -143,7 +143,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers commit body lines and paragraphs with trailers and suffixed comments" do
+    it "answers body lines and paragraphs with trailers and suffixed comments" do
       content = <<~CONTENT
         <body>One.\n\none: 1\n\n# One.\n\n# Two.\n</body>
         <trailers>one: 1\n</trailers>
@@ -159,7 +159,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers commit trailers with special characters" do
+    it "answers trailers with special characters" do
       content = <<~CONTENT
         <body>One.\n\na: #!+\nissue: [x-1]\n</body>
         <trailers>a: #!+\nissue: [x-1]\n</trailers>
@@ -176,7 +176,7 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers without scissors" do
+    it "answers with scissors for lines and raw attributes only" do
       content = <<~CONTENT
         <body>A test.\n\n# ----- >8 -----\n# Do not modify.</body>
         <raw>A test.\n\n# ----- >8 -----\n# Do not modify.</raw>
@@ -199,14 +199,11 @@ RSpec.describe Gitt::Parsers::Commit do
     end
 
     it "answers statistics" do
-      stats = "<statistics>2 files updated, 5 insertions, 10 deletions</statistics>"
-      content = "#{content_without_body}\n#{stats}"
+      content_with_stats = "#{content}\n" \
+                           "<statistics>2 files updated, 5 insertions, 10 deletions</statistics>"
+      proof = commit.merge deletions: 10, files_changed: 2, insertions: 5
 
-      expect(parser.call(content)).to have_attributes(
-        deletions: 10,
-        files_changed: 2,
-        insertions: 5
-      )
+      expect(parser.call(content_with_stats)).to eq(proof)
     end
   end
 end
