@@ -176,7 +176,29 @@ RSpec.describe Gitt::Parsers::Commit do
       )
     end
 
-    it "answers commit with statistics" do
+    it "answers without scissors" do
+      content = <<~CONTENT
+        <body>A test.\n\n# ----- >8 -----\n# Do not modify.</body>
+        <raw>A test.\n\n# ----- >8 -----\n# Do not modify.</raw>
+      CONTENT
+
+      expect(parser.call(content)).to eq(
+        Gitt::Models::Commit[
+          body: "A test.\n",
+          body_lines: ["A test."],
+          body_paragraphs: ["A test."],
+          deletions: 0,
+          files_changed: 0,
+          insertions: 0,
+          lines: ["A test.", "", "# ----- >8 -----", "# Do not modify."],
+          raw: "A test.\n\n# ----- >8 -----\n# Do not modify.",
+          signature: "Invalid",
+          trailers: []
+        ]
+      )
+    end
+
+    it "answers statistics" do
       stats = "<statistics>2 files updated, 5 insertions, 10 deletions</statistics>"
       content = "#{content_without_body}\n#{stats}"
 

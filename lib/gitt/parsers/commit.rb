@@ -32,10 +32,9 @@ module Gitt
       # :reek:TooManyStatements
       def process attributes
         body, trailers = attributes.values_at :body, :trailers
+        body = scissors_sanitizer.call body
 
-        attributes.transform_with! body: scissors_sanitizer,
-                                   signature: signature_sanitizer,
-                                   trailers: trailers_sanitizer
+        attributes.transform_with! signature: signature_sanitizer, trailers: trailers_sanitizer
 
         attributes[:body] =
           (trailers ? body.sub(/\n??#{Regexp.escape trailers}\n??/, "") : body).chomp
