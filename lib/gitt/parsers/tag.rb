@@ -22,7 +22,7 @@ module Gitt
                                    authored_at: date_sanitizer,
                                    committed_at: date_sanitizer,
                                    committer_email: email_sanitizer,
-                                   version: -> value { value.delete_prefix "refs/tags/" if value }
+                                   version: version_serializer
         model[**attributes]
       end
 
@@ -30,9 +30,11 @@ module Gitt
 
       attr_reader :attributer, :sanitizers, :model
 
-      def date_sanitizer = sanitizers.fetch(:date)
+      def date_sanitizer = sanitizers.fetch :date
 
-      def email_sanitizer = sanitizers.fetch(:email)
+      def email_sanitizer = sanitizers.fetch :email
+
+      def version_serializer = sanitizers.fetch :version
     end
   end
 end
