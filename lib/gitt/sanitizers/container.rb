@@ -10,7 +10,8 @@ module Gitt
       scissors: Scissors,
       signature: Signature,
       statistic: Statistic.new,
-      trailers: Trailers.new
+      trailers: Trailers.new,
+      version: Version
     }.freeze
   end
 end
