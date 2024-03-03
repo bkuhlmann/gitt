@@ -4,7 +4,7 @@ require "refinements/hash"
 
 module Gitt
   module Parsers
-    # Parses raw commit information to produce a commit record.
+    # Parses raw commit to produce a commit record.
     class Commit
       using Refinements::Hash
 
@@ -16,14 +16,11 @@ module Gitt
         @model = model
       end
 
-      # rubocop:todo Layout/LineLength
       def call content
         attributer.call(content)
                   .then { |attributes| process attributes }
-                  .then { |attributes| attributes.merge! statistic_sanitizer.call(attributes.delete(:statistics)) }
                   .then { |attributes| model[**attributes] }
       end
-      # rubocop:enable Layout/LineLength
 
       private
 
@@ -56,6 +53,11 @@ module Gitt
       # :reek:FeatureEnvy
       def process_lines attributes
         attributes[:lines] = lines_sanitizer.call attributes[:raw]
+      end
+
+      # :reek:FeatureEnvy
+      def process_statistics attributes
+        attributes.merge! statistic_sanitizer.call(attributes.delete(:statistics))
       end
 
       def lines_sanitizer = sanitizers.fetch :lines
