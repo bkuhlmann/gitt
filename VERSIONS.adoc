@@ -1,5 +1,19 @@
 = Versions
 
+== 3.2.0 (2024-03-02)
+
+* ✅ Fixed RuboCop RSpec/DescribedClass issue - Brooke Kuhlmann
+* ✅ Fixed log command spec to account for comments after trailers - Brooke Kuhlmann
+* ✅ Fixed removal of verbose commit content from body, lines, and paragraphs - Brooke Kuhlmann
+* ✅ Fixed verbose commit fixture - Brooke Kuhlmann
+* 🟢 Added version serializer - Brooke Kuhlmann
+* 🔼 Updated RuboCop to use XDG local configuration - Brooke Kuhlmann
+* 🔼 Updated to Caliber 0.51.0 - Brooke Kuhlmann
+* 🔁 Refactored commit parser - Brooke Kuhlmann
+* 🔁 Refactored commit parser spec - Brooke Kuhlmann
+* 🔁 Refactored sanitizers to use text instead of value for input - Brooke Kuhlmann
+* 🔁 Refactored tag parser to use version sanitizer - Brooke Kuhlmann
+
 == 3.1.1 (2024-02-18)
 
 * ✅ Fixed log command spec to ignore comments after trailers - Brooke Kuhlmann
