@@ -88,6 +88,7 @@ RSpec.describe Gitt::Commands::Tag do
             committer_email: "test@example.com",
             committer_name: "Test User",
             sha: /\h{40}/,
+            signature: "",
             subject: "Version 0.0.0",
             version: "0.0.0"
           )
@@ -185,6 +186,7 @@ RSpec.describe Gitt::Commands::Tag do
           committer_email: "test@example.com",
           committer_name: "Test User",
           sha: /\h{40}/,
+          signature: "",
           subject: "Version 0.0.0",
           version: "0.0.0"
         )

@@ -12,12 +12,13 @@ RSpec.describe Gitt::Parsers::Tag do
         <author_name>Test User</author_name>
         <authored_at>1668984438 -0700</authored_at>
         <authored_relative_at>0 seconds ago</authored_relative_at>
+        <body>This is a test.</body>
         <committed_at>1668984438 -0700</committed_at>
         <committed_relative_at>0 seconds ago</committed_relative_at>
         <committer_email><test@example.com></committer_email>
         <committer_name>Test User</committer_name>
-        <body>This is a test.</body>
         <sha>180dec7d8ae8cbe3565a727c63c2111e49e0b737</sha>
+        <signature></signature>
         <subject>Version 0.0.0</subject>
         <version>refs/tags/0.0.0</version>
       CONTENT
@@ -27,12 +28,13 @@ RSpec.describe Gitt::Parsers::Tag do
         author_name: "Test User",
         authored_at: "1668984438",
         authored_relative_at: "0 seconds ago",
-        committer_email: "test@example.com",
-        committer_name: "Test User",
+        body: "This is a test.",
         committed_at: "1668984438",
         committed_relative_at: "0 seconds ago",
-        body: "This is a test.",
+        committer_email: "test@example.com",
+        committer_name: "Test User",
         sha: "180dec7d8ae8cbe3565a727c63c2111e49e0b737",
+        signature: "",
         subject: "Version 0.0.0",
         version: "0.0.0"
       )

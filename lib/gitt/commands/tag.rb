@@ -15,12 +15,13 @@ module Gitt
         author_name: "%(*authorname)",
         authored_at: "%(*authordate:raw)",
         authored_relative_at: "%(*authordate:relative)",
+        body: "%(body)",
         committed_at: "%(*committerdate:raw)",
         committed_relative_at: "%(*committerdate:relative)",
         committer_email: "%(*committeremail)",
         committer_name: "%(*committername)",
-        body: "%(body)",
         sha: "%(objectname)",
+        signature: "%(contents:signature)",
         subject: "%(subject)",
         version: "%(refname)"
       }.freeze

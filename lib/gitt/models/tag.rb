@@ -14,6 +14,7 @@ module Gitt
       :committer_email,
       :committer_name,
       :sha,
+      :signature,
       :subject,
       :version
     ) do
