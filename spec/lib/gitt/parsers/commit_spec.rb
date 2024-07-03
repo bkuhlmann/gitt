@@ -18,6 +18,10 @@ RSpec.describe Gitt::Parsers::Commit do
       <committed_relative_at>1 second ago</committed_relative_at>
       <committer_email>other@example.com</committer_email>
       <committer_name>Other User</committer_name>
+      <encoding></encoding>
+      <fingerprint></fingerprint>
+      <fingerprint_key></fingerprint_key>
+      <notes></notes>
       <raw></raw>
       <sha>180dec7d8ae8cbe3565a727c63c2111e49e0b737</sha>
       <signature>N</signature>
@@ -40,9 +44,13 @@ RSpec.describe Gitt::Parsers::Commit do
       committer_email: "other@example.com",
       committer_name: "Other User",
       deletions: 0,
+      encoding: "",
       files_changed: 0,
+      fingerprint: "",
+      fingerprint_key: "",
       insertions: 0,
       lines: [],
+      notes: "",
       raw: "",
       sha: "180dec7d8ae8cbe3565a727c63c2111e49e0b737",
       signature: "None",

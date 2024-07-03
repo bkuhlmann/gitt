@@ -23,6 +23,8 @@ module Gitt
         raw: "%B",
         sha: "%H",
         signature: "%G?",
+        fingerprint: "%GK",
+        fingerprint_key: "%GF",
         subject: "%s",
         trailers: "%(trailers)"
       }.freeze

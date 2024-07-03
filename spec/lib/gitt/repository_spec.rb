@@ -235,6 +235,8 @@ RSpec.describe Gitt::Repository do
           deletions: 0,
           encoding: "",
           files_changed: 0,
+          fingerprint: "",
+          fingerprint_key: "",
           insertions: 0,
           lines: ["Added documentation"],
           notes: "",

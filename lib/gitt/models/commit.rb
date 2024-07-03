@@ -20,6 +20,8 @@ module Gitt
       :deletions,
       :encoding,
       :files_changed,
+      :fingerprint,
+      :fingerprint_key,
       :insertions,
       :lines,
       :notes,
