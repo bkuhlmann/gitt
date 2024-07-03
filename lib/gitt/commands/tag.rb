@@ -37,7 +37,7 @@ module Gitt
         return Failure "Unable to create Git tag without version." unless version
         return Failure "Tag exists: #{version}." if exist? version
 
-        Tempfile.open "git_plus" do |file|
+        Tempfile.open "gitt" do |file|
           file.write body
           write version, file.tap(&:rewind), *flags
         end
