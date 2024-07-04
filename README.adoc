@@ -193,57 +193,88 @@ In order to have access to rich data from the Git client, there are several mode
 
 ==== Commit
 
-An instance of `Gitt::Models::Commit` is what is answered back to when using `Gitt::Repository` via the `#commits` or `#uncommitted` methods. In each case, you'll either get an array of records, a single record, or a failure depending on the result. Here's an example of a single record:
+An instance of `Gitt::Models::Commit` is what is answered back to when using `Gitt` via the `#commits` or `#uncommitted` methods. In each case, you'll either get an array of records, a single record, or a failure depending on the result. Here's an example of a single record:
 
 [source,ruby]
 ----
-# #<struct Gitt::Models::Commit
-#  author_date_relative="2 days ago",
-#  author_email="demo@example.com",
-#  author_name="Demo User",
-#  body="Necessary to explain recent changes.\n",
-#  body_lines=["Necessary to explain recent changes."],
-#  body_paragraphs=["Necessary to explain recent changes."],
-#  message="Updated documentation with new functionality\n\nNecessary to explain recent changes.\n",
-#  sha="5e21a9866827bf5c68bd445ea01b3837a3936b45",
-#  subject="Updated documentation with new functionality",
-#  trailers=[],
-#  trailers_index=nil>
+# #<Struct:Gitt::Models::Commit:0x0001d4e8
+#   author_email = "demo@example.io",
+#   author_name = "Brooke Kuhlmann",
+#   authored_at = "1720130186",
+#   authored_relative_at = "33 seconds ago",
+#   body = "",
+#   body_lines = [],
+#   body_paragraphs = [],
+#   committed_at = "1720130186",
+#   committed_relative_at = "33 seconds ago",
+#   committer_email = "demo@example.io",
+#   committer_name = "Brooke Kuhlmann",
+#   deletions = 3,
+#   encoding = "",
+#   files_changed = 3,
+#   fingerprint = "F2BC49BC4FFB9A48",
+#   fingerprint_key = "D1488588D2DEDF73E62F07A1F2BC49BC4FFB9A48",
+#   insertions = 9,
+#   lines = [
+#     "Added version release notes"
+#   ],
+#   notes = "",
+#   raw = "Added version release notes\n",
+#   sha = "49e033d7020068630fd3823a29c2eb8a1ef01770",
+#   signature = "Good",
+#   subject = "Added version release notes",
+#   trailers = []
+# >
 ----
 
 You get a {struct_link} with the following attributes:
 
-* `author_date_relative`: Stores the relative date of when the commit was made.
 * `author_email`: Stores the author email.
 * `author_name`: Stores the author name.
+* `authored_at`: Stores local time of when the commit was made.
+* `author_relative_at`: Stores the relative time of when the commit was made.
 * `body`: Stores the commit body which excludes the subject and leading space.
 * `body_lines`: Stores each line of the body in an array.
 * `body_paragraphs`: Stores each paragraph of the body as an array (i.e. broken by double new lines).
-* `message`: Stores the entire, raw, commit message (i.e. subject and body).
+* `committed_at`: Stores local time of when the commit was updated.
+* `committed_relative_at`: Stores the relative time of when the commit was updated.
+* `committer_email`: Stores the committer email.
+* `committer_name`: Stores the committer name.
+* `deletions`: Stores number of deleted lines.
+* `encoding`: Stored encoding. Blank if UTF-8 andf filled if otherwise.
+* `files_changed`: Stores number of files changed.
+* `fingerprint`: Stores the fingerprint used when creating a secure commit.
+* `fingerprint_key`: Stores the fingerprint key used when creating a secure commit.
+* `insertions`: Stores the number inserted lines.
+* `lines`: Stores each line of the commit message as an array.
+* `notes`: Stores commit note (if any.
+* `raw`: Stores the raw commit message (subject + message).
 * `sha`: Stores the commit SHA.
+* `signature`: Stores the signature type and level of security.
 * `subject`: Stores the commit subject.
 * `trailers`: Stores any commit trailers as an array of `Gitt::Models::Trailer` records.
-* `trailers_index`: Stores the starting index of trailers within the commit message.
 
 ==== Tag
 
-An instance of `Gitt::Models::Tag` is what is answered back to when using `Gitt::Repository` via the `#tag_parse` method. Here's an example:
+An instance of `Gitt::Models::Tag` is what is answered back to when using `Gitt` via the `#tags` method, for example. Here's an example:
 
 [source,ruby]
 ----
-# #<struct Gitt::Models::Tag
-#  author_email="demo@example.com",
-#  author_name="Brooke Kuhlmann",
-#  authored_at="1671892451",
-#  authored_relative_at="1 year ago",
-#  body="A demo body.",
-#  committed_at="1671997684",
-#  committed_relative_at="1 year ago",
-#  committer_email="demo@example.com",
-#  committer_name="Brooke Kuhlmann",
-#  sha="662f32b2846c7bd4f153560478f035197f5279d5",
-#  subject="Version 1.0.0",
-#  version="1.0.0">
+#<Struct:Gitt::Models::Tag:0x000314c0
+  author_email = "demo@example.io",
+  author_name = "Brooke Kuhlmann",
+  authored_at = "1671892451",
+  authored_relative_at = "1 year, 6 months ago",
+  body = "Example.\n\n-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCAAdFiEE0UiFiNLe33PmLweh8rxJvE/Nii2FB9wo6oc\nhVJ+beT6vnmZHKsvrqkpb1BAE10/pS8RkXjjaBmYaUIBYmG6RQ/+yUvyNjldWLuO\nBkYyUawSBT94V/ve/oYxTdylCkWj1TGYG+iP4NNnhz64rMikckY=\n=ptac\n-----END PGP SIGNATURE-----\n",
+  committed_at = "1671997684",
+  committed_relative_at = "1 year, 6 months ago",
+  committer_email = "demo@example.io",
+  committer_name = "Brooke Kuhlmann",
+  sha = "662f32b2846c7bd4f153560478f035197f5279d5",
+  signature = "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCAAdFiEE0UiFiNLe33PmLweh8rxJvE/Nii2FB9wo6oc\nhVJ+beT6vnmZHKsvrqkpb1BAE10/pS8RkXjjaBmYaUIBYmG6RQ/+yUvyNjldWLuO\nBkYyUawSBT94V/ve/oYxTdylCkWj1TGYG+iP4NNnhz64rMikckY=\n=ptac\n-----END PGP SIGNATURE-----\n",
+  subject = "Version 1.0.0",
+  version = "1.0.0"
+>
 ----
 
 You get a {struct_link} with the following attributes:
@@ -253,11 +284,12 @@ You get a {struct_link} with the following attributes:
 *  `authored_at`: Stores author creation date.
 *  `authored_relative_at`: Stores author creation date relative to current time.
 *  `body`: Stores body of tag which can be sentences, multiple paragraphs, and/or signature information.
-*  `committer_email`: Stores committer email.
-*  `committer_name`: Store committer name.
 *  `committed_at`: Stores committer creation date.
 *  `committed_relative_at`: Stores committer creation date relative to current time.
+*  `committer_email`: Stores committer email.
+*  `committer_name`: Store committer name.
 *  `sha`: Stores the commit SHA for which this tag labels
+*  `signature`: Stores the signature when the tag was securely created.
 *  `subject`: Stores the subject.
 *  `version`: Stores the version.
 
