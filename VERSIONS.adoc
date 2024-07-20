@@ -1,5 +1,11 @@
 = Versions
 
+== 3.7.0 (2024-07-20)
+
+* 🔼 Updated to Git Lint 8.0.0 - Brooke Kuhlmann
+* 🔼 Updated to Refinements 12.7.0 - Brooke Kuhlmann
+* 🔼 Updated to Ruby 3.3.4 - Brooke Kuhlmann
+
 == 3.6.0 (2024-07-04)
 
 * ✅ Fixed tag command to use gem name for temporary file - Brooke Kuhlmann
