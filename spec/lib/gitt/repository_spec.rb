@@ -71,7 +71,7 @@ RSpec.describe Gitt::Repository do
 
   describe "#config" do
     it "answers configuration usage" do
-      git_repo_dir.change_dir { expect(repository.config).to match(Failure(/usage/)) }
+      git_repo_dir.change_dir { expect(repository.config).to match(Failure(/no action specified/)) }
     end
   end
 
