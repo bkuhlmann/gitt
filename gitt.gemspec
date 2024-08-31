@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.metadata = {
     "bug_tracker_uri" => "https://github.com/bkuhlmann/gitt/issues",
     "changelog_uri" => "https://alchemists.io/projects/gitt/versions",
-    "documentation_uri" => "https://alchemists.io/projects/gitt",
+    "homepage_uri" => "https://alchemists.io/projects/gitt",
     "funding_uri" => "https://github.com/sponsors/bkuhlmann",
     "label" => "Gitt",
     "rubygems_mfa_required" => "true",
