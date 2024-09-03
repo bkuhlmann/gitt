@@ -1,0 +1,6 @@
+Added statistics
+
+1 commit. 1 file. 10 deletions. 5 insertions.
+
+# ------------------------ >8 ------------------------
++1 commit. 1 file. 10 deletions. 5 insertions.

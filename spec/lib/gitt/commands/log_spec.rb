@@ -383,6 +383,29 @@ RSpec.describe Gitt::Commands::Log do
       end
     end
 
+    it "answers commit with raw content similar to computed stats" do
+      git_repo_dir.change_dir do
+        path = SPEC_ROOT.join "support/fixtures/commit-stats.txt"
+        result = command.uncommitted path
+
+        expect(result.success).to have_attributes(
+          author_email: "test@example.com",
+          author_name: "Test User",
+          authored_relative_at: "0 seconds ago",
+          body: "1 commit. 1 file. 10 deletions. 5 insertions.\n",
+          body_lines: ["1 commit. 1 file. 10 deletions. 5 insertions."],
+          body_paragraphs: ["1 commit. 1 file. 10 deletions. 5 insertions."],
+          raw: "Added statistics\n\n" \
+               "1 commit. 1 file. 10 deletions. 5 insertions.\n\n" \
+               "# ------------------------ >8 ------------------------\n" \
+               "+1 commit. 1 file. 10 deletions. 5 insertions.\n",
+          sha: /\A\h{40}\Z/,
+          subject: "Added statistics",
+          trailers: []
+        )
+      end
+    end
+
     it "answers error with invalid path" do
       path = Bundler.root.join "tmp/bogus.txt"
       expect(command.uncommitted(path)).to eq(Failure(%(Invalid commit message path: "#{path}".)))

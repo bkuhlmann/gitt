@@ -70,8 +70,9 @@ module Gitt
 
       # :reek:UtilityFunction
       def wrap_statistics entries
-        entries.gsub!(/\d+\sfile.+\d+\s(insertion|deletion).+\n/) do |match|
-          "<statistics>#{match}</statistics><break/>"
+        entries.gsub!(/\n"\n\s\d+\sfile.+\d+\s(insertion|deletion).+\n/) do |match|
+          match.delete_prefix!("\n\"\n").strip!
+          "\n<statistics>#{match}</statistics>\n<break/>"
         end
       end
 
