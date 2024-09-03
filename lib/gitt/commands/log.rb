@@ -78,7 +78,7 @@ module Gitt
       # :reek:UtilityFunction
       def add_empty_statistics entries
         entries.gsub! %(</trailers>\n"\n"<author_email>),
-                      "</trailers>\n<statistics></statistics>\n<author_email>"
+                      "</trailers>\n<statistics></statistics><break/>\n<author_email>"
       end
     end
   end

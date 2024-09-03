@@ -247,19 +247,62 @@ RSpec.describe Gitt::Commands::Log do
       end
     end
 
-    it "answers zero stats for empty commits" do
-      git_repo_dir.change_dir do
-        `git commit --allow-empty --message "----- Breakpoint -----"`
-        commits = command.index.success.map(&:to_h)
-
-        expect(commits.last).to match(
-          hash_including(
-            subject: "----- Breakpoint -----",
-            deletions: 0,
-            files_changed: 0,
-            insertions: 0
-          )
+    context "with empty commits" do
+      let :proof_one do
+        hash_including(
+          author_email: "test@example.com",
+          author_name: "Test User",
+          authored_relative_at: /\A\d+ seconds?? ago\Z/,
+          body: "",
+          body_lines: [],
+          body_paragraphs: [],
+          raw: "Added documentation\n",
+          sha: /\A[0-9a-f]{40}\Z/,
+          signature: "None",
+          subject: "Added documentation",
+          trailers: []
         )
+      end
+
+      let :proof_two do
+        hash_including(
+          author_email: "test@example.com",
+          author_name: "Test User",
+          authored_relative_at: /\A\d+ seconds?? ago\Z/,
+          body: "",
+          body_lines: [],
+          body_paragraphs: [],
+          raw: "Added empty commit\n",
+          sha: /\A[0-9a-f]{40}\Z/,
+          signature: "None",
+          subject: "Added empty commit",
+          trailers: []
+        )
+      end
+
+      it "answers commits" do
+        git_repo_dir.change_dir do
+          `git commit --allow-empty --no-verify --message "Added empty commit"`
+          commits = command.index.success.map(&:to_h)
+
+          expect(commits).to contain_exactly(proof_one, proof_two)
+        end
+      end
+
+      it "answers zero stats" do
+        git_repo_dir.change_dir do
+          `git commit --allow-empty --no-verify --message "Added empty commit"`
+          commits = command.index.success.map(&:to_h)
+
+          expect(commits.first).to match(
+            hash_including(
+              subject: "Added empty commit",
+              deletions: 0,
+              files_changed: 0,
+              insertions: 0
+            )
+          )
+        end
       end
     end
 
