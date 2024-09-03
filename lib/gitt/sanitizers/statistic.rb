@@ -12,24 +12,25 @@ module Gitt
         (?<kind>file|insertion|deletion)  # Kind capture group.
       /x
 
+      def self.update_stats attributes, kind, total
+        case kind
+          when "file" then attributes[:files_changed] = total
+          when "insertion" then attributes[:insertions] = total
+          when "deletion" then attributes[:deletions] = total
+          else fail StandardError, "Invalid kind: #{kind.inspect}."
+        end
+      end
+
       def initialize empty: EMPTY, pattern: PATTERN
         @empty = empty
         @pattern = pattern
       end
 
-      # :reek:TooManyStatements
       def call text
         return empty unless text
 
-        text.scan(pattern).each.with_object(empty.dup) do |(number, kind), stats|
-          total = number.to_i
-
-          case kind
-            when "file" then stats[:files_changed] = total
-            when "insertion" then stats[:insertions] = total
-            when "deletion" then stats[:deletions] = total
-            # :nocov:
-          end
+        text.scan(pattern).each.with_object(empty.dup) do |(number, kind), aggregate|
+          self.class.update_stats aggregate, kind, number.to_i
         end
       end
 
