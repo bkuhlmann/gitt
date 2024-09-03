@@ -93,6 +93,12 @@ RSpec.describe Gitt::Repository do
     end
   end
 
+  describe "#inspect" do
+    it "answers something" do
+      expect(repository.inspect).to match(/\#<Gitt::Repository:\d+\s@shell=.+\s@commands=\[.+\]>/xo)
+    end
+  end
+
   describe "#log" do
     it "answers commit log/history" do
       git_repo_dir.change_dir { expect(repository.log).to match(Success(/Added documentation/)) }

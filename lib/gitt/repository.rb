@@ -34,6 +34,11 @@ module Gitt
 
     def get(...) = commands.fetch(:config).get(...)
 
+    def inspect
+      "#<#{self.class}:#{object_id} @shell=#{shell.inspect} " \
+      "@commands=#{commands.values.map(&:class).inspect}>"
+    end
+
     def log(...) = commands.fetch(__method__).call(...)
 
     def origin? = commands.fetch(:config).origin?
