@@ -6,3 +6,6 @@ detectors:
   ModuleInitialize:
     exclude:
       - "Gitt::Models"
+  TooManyMethods:
+    exclude:
+      - "Gitt::Repository"

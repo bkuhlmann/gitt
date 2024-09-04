@@ -4,7 +4,6 @@ require "core"
 
 module Gitt
   # Primary object/wrapper for processing all Git related commands.
-  # :reek:TooManyMethods
   class Repository
     COMMANDS = {
       branch: Commands::Branch,
