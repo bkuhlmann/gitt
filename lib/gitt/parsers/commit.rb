@@ -18,7 +18,7 @@ module Gitt
 
       def call content
         attributer.call(content)
-                  .then { |attributes| process attributes }
+                  .then { |attributes| mutate attributes }
                   .then { |attributes| model[**attributes] }
       end
 
@@ -27,7 +27,7 @@ module Gitt
       attr_reader :attributer, :sanitizers, :model
 
       # :reek:TooManyStatements
-      def process attributes
+      def mutate attributes
         body, trailers = attributes.values_at :body, :trailers
         body = scissors_sanitizer.call body
 
