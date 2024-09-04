@@ -6,7 +6,7 @@ module Gitt
       date: Date,
       email: Email,
       lines: Lines,
-      paragraphs: Paragraphs,
+      paragraphs: Paragraphs.new,
       scissors: Scissors,
       signature: Signature,
       statistic: Statistic.new,
