@@ -1,5 +1,15 @@
 = Versions
 
+== 3.8.1 (2024-09-03)
+
+* ✅ Fixed log index parsing with empty commits - Brooke Kuhlmann
+* ✅ Fixed log index parsing with raw content similar to computed statistics - Brooke Kuhlmann
+* ✅ Fixed repository inspection to be less verbose - Brooke Kuhlmann
+* ✅ Fixed statistic sanitizer code quality - Brooke Kuhlmann
+* 🔼 Updated Reek configuration to ignore repository methods - Brooke Kuhlmann
+* 🔼 Updated to Ruby 3.3.5 - Brooke Kuhlmann
+* 🔁 Refactored commit parser to clarify attribute mutation - Brooke Kuhlmann
+
 == 3.8.0 (2024-09-01)
 
 * ✅ Fixed repository spec failure to check for updated error message - Brooke Kuhlmann
