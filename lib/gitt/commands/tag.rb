@@ -23,6 +23,7 @@ module Gitt
         sha: "%(objectname)",
         signature: "%(contents:signature)",
         subject: "%(subject)",
+        trailers: "%(trailers)",
         version: "%(refname)"
       }.freeze
 
