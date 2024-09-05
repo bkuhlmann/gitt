@@ -20,6 +20,7 @@ RSpec.describe Gitt::Parsers::Tag do
         <sha>180dec7d8ae8cbe3565a727c63c2111e49e0b737</sha>
         <signature></signature>
         <subject>Version 0.0.0</subject>
+        <trailers></trailers>
         <version>refs/tags/0.0.0</version>
       CONTENT
 
@@ -36,6 +37,7 @@ RSpec.describe Gitt::Parsers::Tag do
         sha: "180dec7d8ae8cbe3565a727c63c2111e49e0b737",
         signature: "",
         subject: "Version 0.0.0",
+        trailers: [],
         version: "0.0.0"
       )
     end
@@ -64,9 +66,24 @@ RSpec.describe Gitt::Parsers::Tag do
       )
     end
 
-    it "answers strips version of tag reference path" do
+    it "strips version of tag reference path" do
       expect(parser.call("<version>refs/tags/0.0.0</version>")).to have_attributes(
         version: "0.0.0"
+      )
+    end
+
+    it "answers trailers with special characters" do
+      content = <<~CONTENT
+        <body>One.\n\na: #!+\nissue: [x-1]\n</body>
+        <trailers>a: #!+\nissue: [x-1]\n</trailers>
+      CONTENT
+
+      expect(parser.call(content)).to have_attributes(
+        body: "One.",
+        trailers: [
+          Gitt::Models::Trailer[key: "a", value: "#!+"],
+          Gitt::Models::Trailer[key: "issue", value: "[x-1]"]
+        ]
       )
     end
   end

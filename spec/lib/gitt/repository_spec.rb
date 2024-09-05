@@ -141,7 +141,7 @@ RSpec.describe Gitt::Repository do
             author_name: "Test User",
             authored_at: /\d{10}/,
             authored_relative_at: /\A\d+ seconds?? ago\Z/,
-            body: "Test.\n",
+            body: "Test.",
             committed_at: /\d{10}/,
             committed_relative_at: /\A\d+ seconds?? ago\Z/,
             committer_email: "test@example.com",
