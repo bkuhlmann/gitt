@@ -16,8 +16,11 @@ module Gitt
       :sha,
       :signature,
       :subject,
+      :trailers,
       :version
     ) do
+      include Trailable
+
       def initialize(**)
         super
         freeze

@@ -10,4 +10,10 @@ RSpec.describe Gitt::Models::Tag do
       expect(tag.frozen?).to be(true)
     end
   end
+
+  describe "with trailers" do
+    subject(:trailable) { described_class[trailers:] }
+
+    it_behaves_like "a trailable"
+  end
 end
