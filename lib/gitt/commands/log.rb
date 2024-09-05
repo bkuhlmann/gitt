@@ -58,8 +58,8 @@ module Gitt
       attr_reader :shell, :key_map, :parser
 
       def pretty_format
-        key_map.reduce("") { |string, (key, value)| string + "<#{key}>#{value}</#{key}>%n" }
-               .then { |structure| %(--pretty=format:"#{structure}") }
+        key_map.reduce(+"") { |format, (key, value)| format << "<#{key}>#{value}</#{key}>%n" }
+               .then { |format| %(--pretty=format:"#{format}") }
       end
 
       def build_records entries

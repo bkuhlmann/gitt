@@ -88,7 +88,7 @@ module Gitt
       attr_reader :shell, :key_map, :parser
 
       def pretty_format
-        key_map.reduce("") { |content, (key, value)| content + "<#{key}>#{value}</#{key}>%n" }
+        key_map.reduce(+"") { |format, (key, value)| format << "<#{key}>#{value}</#{key}>%n" }
                .then { |format| %(--format="#{format}") }
       end
 
