@@ -1,5 +1,16 @@
 = Versions
 
+== 3.9.0 (2024-09-07)
+
+* ✅ Fixed paragraph sanitizer to detect ASCII Doc and Markdown blocks - Brooke Kuhlmann
+* 🟢 Added tag command trailers key - Brooke Kuhlmann
+* 🟢 Added tag model trailers - Brooke Kuhlmann
+* 🟢 Added tag trailer parsing - Brooke Kuhlmann
+* 🟢 Added trailable module - Brooke Kuhlmann
+* 🔁 Refactored commands to reduce mutable strings - Brooke Kuhlmann
+* 🔁 Refactored commit model directable and trailable behavior - Brooke Kuhlmann
+* 🔁 Refactored directable specs to be shared examples - Brooke Kuhlmann
+
 == 3.8.1 (2024-09-03)
 
 * ✅ Fixed log index parsing with empty commits - Brooke Kuhlmann
