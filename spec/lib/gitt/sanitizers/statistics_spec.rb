@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Gitt::Sanitizers::Statistic do
+RSpec.describe Gitt::Sanitizers::Statistics do
   subject(:sanitizer) { described_class.new }
 
   describe ".update" do

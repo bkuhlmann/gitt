@@ -3,7 +3,7 @@
 module Gitt
   module Sanitizers
     # Converts raw text into a statistics hash.
-    class Statistic
+    class Statistics
       EMPTY = {files_changed: 0, insertions: 0, deletions: 0}.freeze
 
       PATTERN = /

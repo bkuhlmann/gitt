@@ -57,7 +57,7 @@ module Gitt
 
       # :reek:FeatureEnvy
       def process_statistics attributes
-        attributes.merge! statistic_sanitizer.call(attributes.delete(:statistics))
+        attributes.merge! statistics_sanitizer.call(attributes.delete(:statistics))
       end
 
       def lines_sanitizer = sanitizers.fetch :lines
@@ -66,7 +66,7 @@ module Gitt
 
       def scissors_sanitizer = sanitizers.fetch :scissors
 
-      def statistic_sanitizer = sanitizers.fetch :statistic
+      def statistics_sanitizer = sanitizers.fetch :statistics
 
       def signature_sanitizer = sanitizers.fetch :signature
 
