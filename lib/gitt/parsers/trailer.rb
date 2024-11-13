@@ -5,12 +5,12 @@ module Gitt
     # Parses raw trailer data to produce a trailer record.
     class Trailer
       PATTERN = /
-        \A               # Start of line.
-        (?<key>.+)       # Key.
-        (?<delimiter>:)  # Colon delimiter.
-        (?<space>\s?)    # Space (optional).
-        (?<value>.*?)    # Value.
-        \Z               # End of line.
+        \A                   # Start of line.
+        (?<key>[a-zA-Z\-]+)  # Key.
+        (?<delimiter>:)      # Delimiter (colon).
+        (?<space>\s?)        # Space (optional).
+        (?<value>.*?)        # Value.
+        \Z                   # End of line.
       /x
 
       EMPTY = Models::Trailer[key: nil, value: nil]
