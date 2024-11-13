@@ -8,13 +8,13 @@
 
 = Gitt
 
-Provides a monadic Object API to the {git_link} CLI. This project is also an extraction of work originally implemented within the following projects:
+Provides a monadic Object API around the {git_link} CLI with full access to all functionality found when using Git natively. This includes convenience methods for answering fully parsed and enhanced commits, tags, trailers, and so forth. This project is an extraction of work originally implemented within the following projects:
 
 * link:https://alchemists.io/projects/git-lint[Git Lint]
 * link:https://alchemists.io/projects/milestoner[Milestoner]
 * link:https://alchemists.io/projects/rubysmith[Rubysmith]
 
-This project doesn't try to encompass the vast feature set natively provided by {git_link} but only exposes the most used features, limited as this may be. Over time, more of the {git_link} feature set will be implemented but it'll most likely happen slowly and organically. If you are looking for alternatives to this gem, then you might find the following of interest:
+If you are looking for alternatives to this gem, then you might find the following of interest:
 
 * link:https://github.com/ruby-git/ruby-git[Ruby Git]
 * link:https://github.com/libgit2/rugged[Rugged]
@@ -24,7 +24,7 @@ toc::[]
 == Features
 
 * Wraps a subset of native {git_link} commands with additional enhancements to improve your working experience.
-* Answers link:https://dry-rb.org/gems/dry-monads[monads] you can link:https://alchemists.io/projects/transactable[pipe] together for more complex workflows.
+* Answers link:https://dry-rb.org/gems/dry-monads[monads] you can link:https://alchemists.io/articles/ruby_function_composition[pipe] together for more complex workflows.
 * Provides _optional_ {rspec_link} shared contexts that speed up the testing of your own Git related implementations.
 
 == Requirements
@@ -47,20 +47,22 @@ At a high level, this project provides a centralized Object API via a single obj
 
 [source,ruby]
 ----
-git = Gitt::Repository.new
+git = Gitt.new
 
 git.branch          # Equivalent to `git branch <arguments>`.
 git.branch_default  # Answers default branch.
 git.branch_name     # Answers current branch.
 git.call            # Allows you to run any Git command.
-git.commits         # Answers commit records.
+git.commits         # Answers enhanced commit records.
 git.config          # Equivalent to `git config <arguments>`.
 git.exist?          # Answers if current directory is a Git repository or not.
 git.get             # Equivalent to `git config get`.
+git.inspect         # Allows you to inspect the current instance.
 git.log             # Equivalent to `git log <arguments>`.
 git.origin?         # Answers if repository has an origin or not.
 git.set             # Equivalent to `get config set`.
 git.tag             # Equivalent to `git tag <arguments>`.
+git.tags            # Answers enhanced tag records.
 git.tag?            # Answers if local or remote tag exists.
 git.tag_create      # Create a new tag.
 git.tag_last        # Answers last tag created.
@@ -68,16 +70,14 @@ git.tag_local?      # Answers if local tag exists?
 git.tag_remote?     # Answers if remote tag exists?
 git.tag_show        # Answers information about a single tag.
 git.tagged?         # Answers if the repository has any tags.
-git.tags            # Answers all tags.
 git.tags_push       # Pushes local tags to remote git.
-git.uncommitted     # Parses a file and answers an unsaved commit message.
-
+git.uncommitted     # Parses `COMMIT_EDITMSG` file and answers the unsaved commit message.
 ----
 
 === Commands
 
-Should you want to use individual commands instead of interacting with the `Repository` object, you
-can leverage any of the objects in the `Commands` namespace which -- at a minimum -- use the link:https://alchemists.io/articles/interactor_pattern[Command Pattern]. Here are the specific commands which are enhanced further:
+Should you want to use individual commands instead of interacting with the `Gitt` object, you
+can leverage any of the objects in the `Commands` namespace which -- at a minimum -- use the link:https://alchemists.io/articles/command_pattern[Command Pattern]. Here are the specific commands which are enhanced further:
 
 ==== link:https://git-scm.com/docs/git-branch[Branch]
 
@@ -148,7 +148,7 @@ The second, is:
 commit log.uncommitted ".git/COMMIT_EDITMSG"
 ----
 
-The above will answer a single commit record. This is great for building a commit object from an unsaved commit message. The only disadvantage of this approach is that you will get template commits which are always stripped out by Git when processing a _saved_ commit.
+The above will answer a single commit record. This is great for building a commit object from an unsaved commit message. The only disadvantage to this approach is you will get template commits which are always stripped out by Git when processing a _saved_ commit.
 
 ==== link:https://git-scm.com/docs/git-tag[Tag]
 
@@ -167,6 +167,9 @@ tag.create "0.0.0", "Version 0.0.0"
 
 # Answers true or false base on whether local and remote tag exist.
 tag.exist? "0.1.0"
+
+# Answers enhanced tag records. Can take any argument accepted with `--list`.
+tag.index
 
 # Answers last tag for git.
 tag.last
@@ -197,30 +200,30 @@ An instance of `Gitt::Models::Commit` is what is answered back to when using `Gi
 
 [source,ruby]
 ----
-# #<Struct:Gitt::Models::Commit:0x0001d4e8
-#   author_email = "demo@example.io",
+# #<Struct:Gitt::Models::Commit:0x00015c70
+#   author_email = "brooke@alchemists.io",
 #   author_name = "Brooke Kuhlmann",
-#   authored_at = "1720130186",
-#   authored_relative_at = "33 seconds ago",
+#   authored_at = "1731517717",
+#   authored_relative_at = "28 seconds ago",
 #   body = "",
 #   body_lines = [],
 #   body_paragraphs = [],
-#   committed_at = "1720130186",
-#   committed_relative_at = "33 seconds ago",
-#   committer_email = "demo@example.io",
+#   committed_at = "1731517717",
+#   committed_relative_at = "28 seconds ago",
+#   committer_email = "brooke@alchemists.io",
 #   committer_name = "Brooke Kuhlmann",
-#   deletions = 3,
+#   deletions = 11,
 #   encoding = "",
-#   files_changed = 3,
+#   files_changed = 1,
 #   fingerprint = "F2BC49BC4FFB9A48",
 #   fingerprint_key = "D1488588D2DEDF73E62F07A1F2BC49BC4FFB9A48",
-#   insertions = 9,
+#   insertions = 14,
 #   lines = [
 #     "Added version release notes"
 #   ],
 #   notes = "",
 #   raw = "Added version release notes\n",
-#   sha = "49e033d7020068630fd3823a29c2eb8a1ef01770",
+#   sha = "0f1e2387ed89d6dab95af384096c95bc04b28e9b",
 #   signature = "Good",
 #   subject = "Added version release notes",
 #   trailers = []
@@ -241,7 +244,7 @@ You get a {struct_link} with the following attributes:
 * `committer_email`: Stores the committer email.
 * `committer_name`: Stores the committer name.
 * `deletions`: Stores number of deleted lines.
-* `encoding`: Stored encoding. Blank if UTF-8 andf filled if otherwise.
+* `encoding`: Stored encoding. Blank if UTF-8 and filled if otherwise.
 * `files_changed`: Stores number of files changed.
 * `fingerprint`: Stores the fingerprint used when creating a secure commit.
 * `fingerprint_key`: Stores the fingerprint key used when creating a secure commit.
@@ -252,7 +255,7 @@ You get a {struct_link} with the following attributes:
 * `sha`: Stores the commit SHA.
 * `signature`: Stores the signature type and level of security.
 * `subject`: Stores the commit subject.
-* `trailers`: Stores any commit trailers as an array of `Gitt::Models::Trailer` records.
+* `trailers`: Stores trailers as an array of `Gitt::Models::Trailer` records.
 
 ==== Tag
 
@@ -260,21 +263,22 @@ An instance of `Gitt::Models::Tag` is what is answered back to when using `Gitt`
 
 [source,ruby]
 ----
-#<Struct:Gitt::Models::Tag:0x000314c0
-  author_email = "demo@example.io",
-  author_name = "Brooke Kuhlmann",
-  authored_at = "1671892451",
-  authored_relative_at = "1 year, 6 months ago",
-  body = "Example.\n\n-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCAAdFiEE0UiFiNLe33PmLweh8rxJvE/Nii2FB9wo6oc\nhVJ+beT6vnmZHKsvrqkpb1BAE10/pS8RkXjjaBmYaUIBYmG6RQ/+yUvyNjldWLuO\nBkYyUawSBT94V/ve/oYxTdylCkWj1TGYG+iP4NNnhz64rMikckY=\n=ptac\n-----END PGP SIGNATURE-----\n",
-  committed_at = "1671997684",
-  committed_relative_at = "1 year, 6 months ago",
-  committer_email = "demo@example.io",
-  committer_name = "Brooke Kuhlmann",
-  sha = "662f32b2846c7bd4f153560478f035197f5279d5",
-  signature = "-----BEGIN PGP SIGNATURE-----\n\niQIzBAABCAAdFiEE0UiFiNLe33PmLweh8rxJvE/Nii2FB9wo6oc\nhVJ+beT6vnmZHKsvrqkpb1BAE10/pS8RkXjjaBmYaUIBYmG6RQ/+yUvyNjldWLuO\nBkYyUawSBT94V/ve/oYxTdylCkWj1TGYG+iP4NNnhz64rMikckY=\n=ptac\n-----END PGP SIGNATURE-----\n",
-  subject = "Version 1.0.0",
-  version = "1.0.0"
->
+# #<Struct:Gitt::Models::Tag:0x0003a5c0
+#   author_email = "brooke@alchemists.io",
+#   author_name = "Brooke Kuhlmann",
+#   authored_at = "1671892451",
+#   authored_relative_at = "1 year, 11 months ago",
+#   body = "* Added Dry Monads gem - Brooke Kuhlmann\n\n-----BEGIN PGP SIGNATURE-----\n",
+#   committed_at = "1671997684",
+#   committed_relative_at = "1 year, 11 months ago",
+#   committer_email = "brooke@alchemists.io",
+#   committer_name = "Brooke Kuhlmann",
+#   sha = "662f32b2846c7bd4f153560478f035197f5279d5",
+#   signature = "-----BEGIN PGP SIGNATURE-----\n",
+#   subject = "Version 1.0.0",
+#   trailers = [],
+#   version = "1.0.0"
+# >
 ----
 
 You get a {struct_link} with the following attributes:
@@ -291,6 +295,7 @@ You get a {struct_link} with the following attributes:
 *  `sha`: Stores the commit SHA for which this tag labels
 *  `signature`: Stores the signature when the tag was securely created.
 *  `subject`: Stores the subject.
+*  `trailers`: Stores trailers as an array of `Gitt::Models::Trailer` records.
 *  `version`: Stores the version.
 
 ==== Trailer

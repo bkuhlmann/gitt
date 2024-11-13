@@ -1,5 +1,9 @@
 = Versions
 
+== 3.12.1 (2024-11-13)
+
+* ✅ Fixed trailer parser to account for values with colons - Brooke Kuhlmann
+
 == 3.12.0 (2024-11-09)
 
 * 🔼 Updated to Caliber 0.64.0 - Brooke Kuhlmann
