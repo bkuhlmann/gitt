@@ -1,5 +1,15 @@
 = Versions
 
+== 4.0.0 (2024-12-27)
+
+* 🔼 Updated statistic sanitzer terminology - Brooke Kuhlmann
+* 🔼 Updated statistics sanitizer to be plural - Brooke Kuhlmann
+* 🔼 Updated to Caliber 0.68.0 - Brooke Kuhlmann
+* 🔼 Updated to Core 2.0.0 - Brooke Kuhlmann
+* 🔼 Updated to IRB Kit 1.0.0 - Brooke Kuhlmann
+* 🔼 Updated to Refinements 13.0.0 - Brooke Kuhlmann
+* 🔼 Updated to Ruby 3.4.0 - Brooke Kuhlmann
+
 == 3.12.1 (2024-11-13)
 
 * ✅ Fixed trailer parser to account for values with colons - Brooke Kuhlmann
