@@ -24,6 +24,6 @@ RSpec.shared_context "with Git repository" do
 
     example.run
 
-    temp_dir.remove_tree
+    temp_dir.rmtree
   end
 end

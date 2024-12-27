@@ -46,7 +46,7 @@ RSpec.describe Gitt::Commands::Tag do
     end
 
     it "fails when tag can't be created" do
-      git_repo_dir.remove_tree.make_dir.change_dir do
+      git_repo_dir.rmtree.make_dir.change_dir do
         `git init`
         expect(command.create("1.2.3")).to eq(Failure("Unable to create tag: 1.2.3."))
       end

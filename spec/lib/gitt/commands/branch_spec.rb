@@ -63,7 +63,7 @@ RSpec.describe Gitt::Commands::Branch do
     end
 
     it "answers failure when name can't be obtained" do
-      git_repo_dir.remove_tree.make_dir.change_dir do
+      git_repo_dir.rmtree.make_dir.change_dir do
         `git init`
         expect(command.name).to match(Failure(/fatal/))
       end
