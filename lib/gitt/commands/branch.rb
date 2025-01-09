@@ -12,16 +12,16 @@ module Gitt
         @shell = shell
       end
 
-      def default fallback = "main"
-        shell.call("config", "init.defaultBranch")
+      def default(fallback = "main", *, **)
+        shell.call("config", "init.defaultBranch", *, **)
              .fmap(&:chomp)
              .fmap { |name| name.empty? ? fallback : name }
              .or(Success(fallback))
       end
 
-      def call(*) = shell.call("branch", *)
+      def call(*, **) = shell.call("branch", *, **)
 
-      def name = shell.call("rev-parse", "--abbrev-ref", "HEAD").fmap(&:chomp)
+      def name(*, **) = shell.call("rev-parse", "--abbrev-ref", "HEAD", *, **).fmap(&:chomp)
 
       private
 

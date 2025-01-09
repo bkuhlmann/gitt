@@ -13,16 +13,17 @@ module Gitt
         @shell = shell
       end
 
-      def call(*) = shell.call("config", *)
+      def call(*, **) = shell.call("config", *, **)
 
-      def get(key, fallback = Core::EMPTY_STRING, *)
-        call(*, "--get", key).fmap(&:chomp)
-                             .or { |error| block_given? ? yield(error) : Success(fallback) }
+      def get(key, fallback = Core::EMPTY_STRING, *, **)
+        shell.call("config", "--get", key, *, **)
+             .fmap(&:chomp)
+             .or { |error| block_given? ? yield(error) : Success(fallback) }
       end
 
       def origin? = !get("remote.origin.url").value_or(Core::EMPTY_STRING).empty?
 
-      def set(key, value, *) = call(*, "--add", key, value).fmap { value }
+      def set(key, value, *, **) = shell.call("config", "--add", key, value, *, **).fmap { value }
 
       private
 

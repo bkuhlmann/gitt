@@ -3,6 +3,10 @@ exclude_paths:
   - vendor
 
 detectors:
+  LongParameterList:
+    exclude:
+      - "Gitt::Commands::Config#get"
+      - "Gitt::Commands::Config#set"
   ModuleInitialize:
     exclude:
       - "Gitt::Models"

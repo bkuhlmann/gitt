@@ -35,11 +35,11 @@ module Gitt
         @parser = parser
       end
 
-      def call(*) = shell.call("log", *)
+      def call(*, **) = shell.call("log", *, **)
 
-      def index *arguments
+      def index(*arguments, **)
         arguments.prepend("--shortstat", pretty_format)
-                 .then { |pretty_format| call(*pretty_format) }
+                 .then { |pretty_format| call(*pretty_format, **) }
                  .fmap { |content| String(content).scrub("?") }
                  .fmap { |entries| build_records entries }
       end

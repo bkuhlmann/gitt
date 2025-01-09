@@ -12,8 +12,10 @@ module Gitt
       @client = client
     end
 
-    def call(*, **)
-      client.capture3("git", *, **).then do |stdout, stderr, status|
+    def call(*all, **)
+      environment, arguments = all.partition { it.is_a? Hash }
+
+      client.capture3(*environment, "git", *arguments, **).then do |stdout, stderr, status|
         status.success? ? Success(stdout) : Failure(stderr)
       end
     end

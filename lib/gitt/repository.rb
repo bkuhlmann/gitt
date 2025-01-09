@@ -21,7 +21,7 @@ module Gitt
 
     def branch_default(...) = commands.fetch(:branch).default(...)
 
-    def branch_name = commands.fetch(:branch).name
+    def branch_name(...) = commands.fetch(:branch).name(...)
 
     def call(...) = shell.call(...)
 
@@ -52,7 +52,7 @@ module Gitt
 
     def tag_create(...) = commands.fetch(:tag).create(...)
 
-    def tag_last = commands.fetch(:tag).last
+    def tag_last(...) = commands.fetch(:tag).last(...)
 
     def tag_local?(...) = commands.fetch(:tag).local?(...)
 
@@ -62,7 +62,7 @@ module Gitt
 
     def tagged? = commands.fetch(:tag).tagged?
 
-    def tags_push = commands.fetch(:tag).push
+    def tags_push(...) = commands.fetch(:tag).push(...)
 
     def uncommitted(...) = commands.fetch(:log).uncommitted(...)
 

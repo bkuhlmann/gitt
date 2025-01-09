@@ -33,7 +33,7 @@ module Gitt
         @parser = parser
       end
 
-      def call(*) = shell.call("tag", *)
+      def call(*, **) = shell.call("tag", *, **)
 
       def create version, body = Core::EMPTY_STRING, *flags
         return Failure "Unable to create Git tag without version." unless version
@@ -47,15 +47,15 @@ module Gitt
 
       def exist?(version) = local?(version) || remote?(version)
 
-      def index *arguments
+      def index(*arguments, **)
         arguments.prepend(pretty_format, "--list")
-                 .then { |flags| call(*flags) }
+                 .then { |flags| call(*flags, **) }
                  .fmap { |content| String(content).scrub("?").split %("\n") }
                  .fmap { |entries| build_records entries }
       end
 
-      def last
-        shell.call("describe", "--abbrev=0", "--tags")
+      def last(*, **)
+        shell.call("describe", "--abbrev=0", "--tags", *, **)
              .fmap(&:strip)
              .or do |error|
                if error.match?(/no names found/i)
@@ -70,7 +70,7 @@ module Gitt
         call("--list", version).value_or(Core::EMPTY_STRING).match?(/\A#{version}\Z/)
       end
 
-      def push = shell.call "push", "--tags"
+      def push(*, **) = shell.call("push", "--tags", *, **)
 
       def remote? version
         shell.call("ls-remote", "--tags", "origin", version)
@@ -78,8 +78,8 @@ module Gitt
              .match?(%r(.+tags/#{version}\Z))
       end
 
-      def show version
-        call(pretty_format, "--list", version).fmap { |content| parser.call content }
+      def show(version, *, **)
+        call(pretty_format, "--list", version, *, **).fmap { |content| parser.call content }
       end
 
       def tagged? = !call.value_or(Core::EMPTY_STRING).empty?
