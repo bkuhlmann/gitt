@@ -23,7 +23,7 @@ toc::[]
 
 == Features
 
-* Wraps a subset of native {git_link} commands with additional enhancements to improve your working experience.
+* Wraps native {git_link} commands with additional enhancements to improve your working experience.
 * Answers link:https://dry-rb.org/gems/dry-monads[monads] you can link:https://alchemists.io/articles/ruby_function_composition[pipe] together for more complex workflows.
 * Provides _optional_ {rspec_link} shared contexts that speed up the testing of your own Git related implementations.
 
@@ -49,30 +49,34 @@ At a high level, this project provides a centralized Object API via a single obj
 ----
 git = Gitt.new
 
-git.branch          # Equivalent to `git branch <arguments>`.
-git.branch_default  # Answers default branch.
-git.branch_name     # Answers current branch.
-git.call            # Allows you to run any Git command.
-git.commits         # Answers enhanced commit records.
-git.config          # Equivalent to `git config <arguments>`.
-git.exist?          # Answers if current directory is a Git repository or not.
-git.get             # Equivalent to `git config get`.
-git.inspect         # Allows you to inspect the current instance.
-git.log             # Equivalent to `git log <arguments>`.
-git.origin?         # Answers if repository has an origin or not.
-git.set             # Equivalent to `get config set`.
-git.tag             # Equivalent to `git tag <arguments>`.
-git.tags            # Answers enhanced tag records.
-git.tag?            # Answers if local or remote tag exists.
-git.tag_create      # Create a new tag.
-git.tag_last        # Answers last tag created.
-git.tag_local?      # Answers if local tag exists?
-git.tag_remote?     # Answers if remote tag exists?
-git.tag_show        # Answers information about a single tag.
-git.tagged?         # Answers if the repository has any tags.
-git.tags_push       # Pushes local tags to remote git.
-git.uncommitted     # Parses `COMMIT_EDITMSG` file and answers the unsaved commit message.
+git.branch             # Equivalent to `git branch <arguments>`.
+git.branch_default     # Answers default branch.
+git.branch_name        # Answers current branch.
+git.call               # Allows you to run any Git command.
+git.commits            # Answers enhanced commit records.
+git.config             # Equivalent to `git config <arguments>`.
+git.exist?             # Answers if current directory is a Git repository or not.
+git.get                # Equivalent to `git config get`.
+git.inspect            # Allows you to inspect the current instance.
+git.log                # Equivalent to `git log <arguments>`.
+git.origin?            # Answers if repository has an origin or not.
+git.set                # Equivalent to `get config set`.
+git.tag                # Equivalent to `git tag <arguments>`.
+git.tags               # Answers enhanced tag records.
+git.tag?               # Answers if local or remote tag exists.
+git.tag_create         # Create a new tag.
+git.tag_delete_local   # Deletes local tag.
+git.tag_delete_remote  # Deletes remote tag.
+git.tag_last           # Answers last tag created.
+git.tag_local?         # Answers if local tag exists?
+git.tag_remote?        # Answers if remote tag exists?
+git.tag_show           # Answers information about a single tag.
+git.tagged?            # Answers if the repository has any tags.
+git.tags_push          # Pushes local tags to remote git.
+git.uncommitted        # Parses `COMMIT_EDITMSG` file and answers the unsaved commit message.
 ----
+
+💡 In general, the above (and individual commands below) support link:https://docs.ruby-lang.org/en/master/Process.html#method-c-spawn[Process#spawn] arguments where you can provide environment, command, arguments, and options (hash). Example: `git.tag({"GIT_COMMITTER_DATE" => "2025-01-01 20:00:00"}, "0.0.0", chdir: "path/to/repo")` This allows you to perform advanced operations where you might need to supply environment variables or options like changing directory (as shown in the example). Check the method signatures to learn more.
 
 === Commands
 
@@ -164,6 +168,12 @@ stdout, stderr, status = tag.call
 
 # Creates a new tag.
 tag.create "0.0.0", "Version 0.0.0"
+
+# Deletes local tag.
+tag.delete_local "0.0.0"
+
+# Deletes remote tag.
+tag.delete_remote "0.0.0"
 
 # Answers true or false base on whether local and remote tag exist.
 tag.exist? "0.1.0"
@@ -328,6 +338,19 @@ require "gitt/rspec/shared_contexts/git_commit"
 
 describe Demo do
   include_context "with Git commit"
+end
+----
+
+==== Git Tag
+
+Provides a default `git_tag` record of `Gitt::Models::Tag` with minimal information for testing purposes and can be used as follows:
+
+[source,ruby]
+----
+require "gitt/rspec/shared_contexts/git_tag"
+
+describe Demo do
+  include_context "with Git tag"
 end
 ----
 
