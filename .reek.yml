@@ -12,4 +12,5 @@ detectors:
       - "Gitt::Models"
   TooManyMethods:
     exclude:
+      - "Gitt::Commands::Tag"
       - "Gitt::Repository"

@@ -31,6 +31,45 @@ RSpec.describe Gitt::Commands::Tag do
     end
   end
 
+  describe "#delete_local" do
+    let(:path) { git_repo_dir.to_s }
+
+    it "deletes tag" do
+      result = command.call("0.0.0", chdir: path).bind { command.delete_local "0.0.0", chdir: path }
+      expect(result).to eq(Success("0.0.0"))
+    end
+
+    it "removes new line" do
+      result = command.call("0.0.0", chdir: path).bind { command.delete_local "0.0.0", chdir: path }
+      expect(result).not_to match(Success(/\n$/m))
+    end
+
+    it "fails when tag isn't found" do
+      expect(command.delete_local("0.0.0", chdir: path)).to eq(Failure("'0.0.0' not found."))
+    end
+  end
+
+  describe "#delete_remote" do
+    let(:path) { git_repo_dir.to_s }
+
+    it "deletes tag" do
+      command = described_class.new shell: instance_double(Gitt::Shell, call: Success(""))
+      expect(command.delete_remote("0.0.0")).to eq(Success("0.0.0"))
+    end
+
+    it "fails when tag isn't found" do
+      result = command.delete_remote "6.6.6", chdir: path
+
+      pattern = if ENV.fetch("CI", false) == "true"
+                  /Could not read from remote repository/
+                else
+                  /unable to delete '6.6.6': remote ref does not exist/
+                end
+
+      expect(result).to match(Failure(pattern))
+    end
+  end
+
   describe "#create" do
     it_behaves_like "a tag", :create
 

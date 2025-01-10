@@ -52,6 +52,10 @@ module Gitt
 
     def tag_create(...) = commands.fetch(:tag).create(...)
 
+    def tag_delete_local(...) = commands.fetch(:tag).delete_local(...)
+
+    def tag_delete_remote(...) = commands.fetch(:tag).delete_remote(...)
+
     def tag_last(...) = commands.fetch(:tag).last(...)
 
     def tag_local?(...) = commands.fetch(:tag).local?(...)

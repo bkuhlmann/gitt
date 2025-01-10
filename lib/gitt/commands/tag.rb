@@ -45,6 +45,19 @@ module Gitt
         end
       end
 
+      def delete_local(version, *, **)
+        call("--delete", version, *, **).fmap { |text| text[/\d+\.\d+\.\d+/] }
+                                        .alt_map do |error|
+                                          error.delete_prefix("error: tag ").chomp
+                                        end
+      end
+
+      def delete_remote(version, *, **)
+        shell.call("push", "--delete", "origin", version, *, **)
+             .fmap { version }
+             .alt_map { |error| error.gsub("error: ", "").chomp }
+      end
+
       def exist?(version) = local?(version) || remote?(version)
 
       def index(*arguments, **)

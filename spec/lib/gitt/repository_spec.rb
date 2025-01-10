@@ -170,6 +170,23 @@ RSpec.describe Gitt::Repository do
     end
   end
 
+  describe "#tag_delete_local" do
+    it "deletes tag" do
+      path = git_repo_dir.to_s
+      result = repository.call("tag", "0.0.0", chdir: path)
+                         .bind { repository.tag_delete_local "0.0.0", chdir: path }
+
+      expect(result).to match(Success(/0\.0\.0/))
+    end
+  end
+
+  describe "#tag_delete_remote" do
+    it "deletes tag" do
+      repository = described_class.new shell: instance_double(Gitt::Shell, call: Success(""))
+      expect(repository.tag_delete_remote("0.0.0")).to match(Success("0.0.0"))
+    end
+  end
+
   describe "#tag_last" do
     it "answers last tag" do
       git_repo_dir.change_dir do
