@@ -11,13 +11,13 @@ RSpec.describe Gitt::Repository do
 
   describe "#branch" do
     it "answers main branch" do
-      git_repo_dir.change_dir { expect(repository.branch).to eq(Success("* main\n")) }
+      expect(repository.branch(chdir: git_repo_dir.to_s)).to eq(Success("* main\n"))
     end
   end
 
   describe "#branch_default" do
     it "answers branch default" do
-      git_repo_dir.change_dir { expect(repository.branch_default).to eq(Success("main")) }
+      expect(repository.branch_default(chdir: git_repo_dir.to_s)).to eq(Success("main"))
     end
 
     it "answers branch fallback" do
@@ -30,13 +30,13 @@ RSpec.describe Gitt::Repository do
 
   describe "#branch_name" do
     it "answers branch name" do
-      git_repo_dir.change_dir { expect(repository.branch_name).to eq(Success("main")) }
+      expect(repository.branch_name(chdir: git_repo_dir.to_s)).to eq(Success("main"))
     end
   end
 
   describe "#call" do
     it "answers" do
-      git_repo_dir.change_dir { expect(repository.call("--man-path")).to match(Success(String)) }
+      expect(repository.call("--man-path", chdir: git_repo_dir.to_s)).to match(Success(String))
     end
   end
 
@@ -63,15 +63,14 @@ RSpec.describe Gitt::Repository do
     end
 
     it "answers saved commit" do
-      git_repo_dir.change_dir do
-        expect(repository.commits.success.map(&:to_h)).to contain_exactly(proof)
-      end
+      commits = repository.commits(chdir: git_repo_dir.to_s).success.map(&:to_h)
+      expect(commits).to contain_exactly(proof)
     end
   end
 
   describe "#config" do
-    it "answers configuration usage" do
-      git_repo_dir.change_dir { expect(repository.config).to match(Failure(/no action specified/)) }
+    it "answers missing configuration" do
+      expect(repository.config(chdir: git_repo_dir.to_s)).to match(Failure(/no action specified/))
     end
   end
 
@@ -89,7 +88,7 @@ RSpec.describe Gitt::Repository do
     let(:key) { "user.name" }
 
     it "answers value" do
-      git_repo_dir.change_dir { expect(repository.get(key)).to eq(Success("Test User")) }
+      expect(repository.get(key, chdir: git_repo_dir.to_s)).to eq(Success("Test User"))
     end
   end
 
@@ -101,7 +100,7 @@ RSpec.describe Gitt::Repository do
 
   describe "#log" do
     it "answers commit log/history" do
-      git_repo_dir.change_dir { expect(repository.log).to match(Success(/Added documentation/)) }
+      expect(repository.log(chdir: git_repo_dir.to_s)).to match(Success(/Added documentation/))
     end
   end
 
@@ -125,7 +124,7 @@ RSpec.describe Gitt::Repository do
 
   describe "#tag" do
     it "delegates to tag command" do
-      git_repo_dir.change_dir { expect(repository.tag).to eq(Success("")) }
+      expect(repository.tag(chdir: git_repo_dir.to_s)).to eq(Success(""))
     end
   end
 

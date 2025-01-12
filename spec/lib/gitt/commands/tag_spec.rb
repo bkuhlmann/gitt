@@ -27,7 +27,7 @@ RSpec.describe Gitt::Commands::Tag do
 
   describe "#call" do
     it "answers empty string with custom arguments" do
-      git_repo_dir.change_dir { expect(command.call("--list")).to eq(Success("")) }
+      expect(command.call("--list", chdir: git_repo_dir.to_s)).to eq(Success(""))
     end
   end
 
@@ -145,7 +145,7 @@ RSpec.describe Gitt::Commands::Tag do
     end
 
     it "answers failure when no tags exist" do
-      git_repo_dir.change_dir { expect(command.last).to eq(Failure("No tags found.")) }
+      expect(command.last(chdir: git_repo_dir.to_s)).to eq(Failure("No tags found."))
     end
 
     it "answers failure when last tag can't be obtained" do

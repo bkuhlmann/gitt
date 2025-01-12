@@ -42,17 +42,17 @@ RSpec.describe Gitt::Commands::Branch do
 
   describe "#call" do
     it "answers main branch with default arguments" do
-      git_repo_dir.change_dir { expect(command.call).to eq(Success("* main\n")) }
+      expect(command.call(chdir: git_repo_dir.to_s)).to eq(Success("* main\n"))
     end
 
     it "answers main branch with custom arguments" do
-      git_repo_dir.change_dir { expect(command.call("--list")).to eq(Success("* main\n")) }
+      expect(command.call("--list", chdir: git_repo_dir.to_s)).to eq(Success("* main\n"))
     end
   end
 
   describe "#name" do
     it "answers default branch name" do
-      git_repo_dir.change_dir { expect(command.name).to eq(Success("main")) }
+      expect(command.name(chdir: git_repo_dir.to_s)).to eq(Success("main"))
     end
 
     it "answers feature branch name" do

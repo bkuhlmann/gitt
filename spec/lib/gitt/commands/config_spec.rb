@@ -13,15 +13,13 @@ RSpec.describe Gitt::Commands::Config do
 
   describe "#call" do
     it "answers attributes with default arguments" do
-      git_repo_dir.change_dir do
-        expect(command.call("--list")).to match(Success(%r(core.hookspath=/dev/null)m))
-      end
+      result = command.call "--list", chdir: git_repo_dir.to_s
+      expect(result).to match(Success(%r(core.hookspath=/dev/null)m))
     end
 
     it "answers error with invalid arguments" do
-      git_repo_dir.change_dir do
-        expect(command.call("--bogus")).to match(Failure(/unknown option.+bogus.+/))
-      end
+      result = command.call "--bogus", chdir: git_repo_dir.to_s
+      expect(result).to match(Failure(/unknown option.+bogus.+/))
     end
   end
 
@@ -29,7 +27,7 @@ RSpec.describe Gitt::Commands::Config do
     let(:key) { "user.name" }
 
     it "answers value without whitespace when key exists" do
-      git_repo_dir.change_dir { expect(command.get(key)).to eq(Success("Test User")) }
+      expect(command.get(key, chdir: git_repo_dir.to_s)).to eq(Success("Test User"))
     end
 
     it "answers empty string when key doesn't exist" do
@@ -68,14 +66,12 @@ RSpec.describe Gitt::Commands::Config do
       let(:value) { "Jayne Doe" }
 
       it "sets key with value" do
-        git_repo_dir.change_dir do
-          command.set key, value
-          expect(command.get(key)).to eq(Success(value))
-        end
+        command.set key, value, chdir: git_repo_dir.to_s
+        expect(command.get(key, chdir: git_repo_dir.to_s)).to eq(Success(value))
       end
 
       it "answers value when key is successfully set" do
-        git_repo_dir.change_dir { expect(command.set(key, value)).to eq(Success(value)) }
+        expect(command.set(key, value, chdir: git_repo_dir.to_s)).to eq(Success(value))
       end
     end
 
@@ -84,21 +80,17 @@ RSpec.describe Gitt::Commands::Config do
       let(:value) { "example" }
 
       it "sets key with value" do
-        git_repo_dir.change_dir do
-          command.set key, value
-          expect(command.get(key)).to eq(Success(value))
-        end
+        command.set key, value, chdir: git_repo_dir.to_s
+        expect(command.get(key, chdir: git_repo_dir.to_s)).to eq(Success(value))
       end
 
       it "answers value when key is successfully set" do
-        git_repo_dir.change_dir { expect(command.set(key, value)).to eq(Success("example")) }
+        expect(command.set(key, value, chdir: git_repo_dir.to_s)).to eq(Success("example"))
       end
     end
 
     it "answers error when key is invalid" do
-      git_repo_dir.change_dir do
-        expect(command.set("bogus", "invalid")).to match(Failure(/error/))
-      end
+      expect(command.set("bogus", "invalid", chdir: git_repo_dir.to_s)).to match(Failure(/error/))
     end
   end
 end

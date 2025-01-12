@@ -11,17 +11,15 @@ RSpec.describe Gitt::Commands::Log do
 
   describe "#call" do
     it "answers log with default arguments" do
-      git_repo_dir.change_dir { expect(command.call).to match(Success(/Added documentation/)) }
+      expect(command.call(chdir: git_repo_dir.to_s)).to match(Success(/Added documentation/))
     end
 
     it "answers log with custom arguments" do
-      git_repo_dir.change_dir do
-        expect(command.call("-1")).to match(Success(/Added documentation/))
-      end
+      expect(command.call("-1", chdir: git_repo_dir.to_s)).to match(Success(/Added documentation/))
     end
 
     it "answers error with invalid arguments" do
-      git_repo_dir.change_dir { expect(command.call("--bogus")).to match(Failure(/bogus/)) }
+      expect(command.call("--bogus", chdir: git_repo_dir.to_s)).to match(Failure(/bogus/))
     end
   end
 
@@ -45,31 +43,26 @@ RSpec.describe Gitt::Commands::Log do
     end
 
     it "answers commits with range only" do
-      git_repo_dir.change_dir do
-        commits = command.index("-1").success.map(&:to_h)
-        expect(commits).to contain_exactly(proof)
-      end
+      commits = command.index("-1", chdir: git_repo_dir.to_s).success.map(&:to_h)
+      expect(commits).to contain_exactly(proof)
     end
 
     it "answers commits with flags only" do
-      git_repo_dir.change_dir do
-        commits = command.index("--author", "Test User").success.map(&:to_h)
-        expect(commits).to contain_exactly(proof)
-      end
+      commits = command.index("--author", "Test User", chdir: git_repo_dir.to_s).success.map(&:to_h)
+      expect(commits).to contain_exactly(proof)
     end
 
     it "answers commits with range and flags" do
-      git_repo_dir.change_dir do
-        commits = command.index("--author", "Test User", "-1").success.map(&:to_h)
-        expect(commits).to contain_exactly(proof)
-      end
+      commits = command.index("--author", "Test User", "-1", chdir: git_repo_dir.to_s)
+                       .success
+                       .map(&:to_h)
+
+      expect(commits).to contain_exactly(proof)
     end
 
     it "answers commits with subject only" do
-      git_repo_dir.change_dir do
-        commits = command.index.success.map(&:to_h)
-        expect(commits).to contain_exactly(proof)
-      end
+      commits = command.index(chdir: git_repo_dir.to_s).success.map(&:to_h)
+      expect(commits).to contain_exactly(proof)
     end
 
     it "answers commits with subject and single-line body" do
@@ -307,7 +300,7 @@ RSpec.describe Gitt::Commands::Log do
     end
 
     it "answers error with invalid argument" do
-      git_repo_dir.change_dir { expect(command.index("bogus")).to match(Failure(/bogus/)) }
+      expect(command.index("bogus", chdir: git_repo_dir.to_s)).to match(Failure(/bogus/))
     end
   end
 
