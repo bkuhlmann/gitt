@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require "dry/monads"
+
 module Gitt
   # Provides shared behavior for objects that have trailers.
   module Trailable
+    include Dry::Monads[:result]
+
     def find_trailer key
       trailers.find { |trailer| trailer.key == key }
               .then do |trailer|

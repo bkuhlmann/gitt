@@ -401,7 +401,7 @@ RSpec.describe Gitt::Commands::Log do
 
     it "answers error with invalid path" do
       path = Bundler.root.join "tmp/bogus.txt"
-      expect(command.uncommitted(path)).to eq(Failure(%(Invalid commit message path: "#{path}".)))
+      expect(command.uncommitted(path)).to be_failure(%(Invalid commit message path: "#{path}".))
     end
   end
 end

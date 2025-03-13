@@ -11,26 +11,26 @@ RSpec.describe Gitt::Repository do
 
   describe "#branch" do
     it "answers main branch" do
-      expect(repository.branch(chdir: git_repo_dir.to_s)).to eq(Success("* main\n"))
+      expect(repository.branch(chdir: git_repo_dir.to_s)).to be_success("* main\n")
     end
   end
 
   describe "#branch_default" do
     it "answers branch default" do
-      expect(repository.branch_default(chdir: git_repo_dir.to_s)).to eq(Success("main"))
+      expect(repository.branch_default(chdir: git_repo_dir.to_s)).to be_success("main")
     end
 
     it "answers branch fallback" do
       git_repo_dir.change_dir do
         `git config --add init.defaultBranch ""`
-        expect(repository.branch_default("other")).to eq(Success("other"))
+        expect(repository.branch_default("other")).to be_success("other")
       end
     end
   end
 
   describe "#branch_name" do
     it "answers branch name" do
-      expect(repository.branch_name(chdir: git_repo_dir.to_s)).to eq(Success("main"))
+      expect(repository.branch_name(chdir: git_repo_dir.to_s)).to be_success("main")
     end
   end
 
@@ -88,7 +88,7 @@ RSpec.describe Gitt::Repository do
     let(:key) { "user.name" }
 
     it "answers value" do
-      expect(repository.get(key, chdir: git_repo_dir.to_s)).to eq(Success("Test User"))
+      expect(repository.get(key, chdir: git_repo_dir.to_s)).to be_success("Test User")
     end
   end
 
@@ -117,14 +117,14 @@ RSpec.describe Gitt::Repository do
 
       git_repo_dir.change_dir do
         repository.set key, value
-        expect(repository.get(key)).to eq(Success(value))
+        expect(repository.get(key)).to be_success(value)
       end
     end
   end
 
   describe "#tag" do
     it "delegates to tag command" do
-      expect(repository.tag(chdir: git_repo_dir.to_s)).to eq(Success(""))
+      expect(repository.tag(chdir: git_repo_dir.to_s)).to be_success("")
     end
   end
 
@@ -164,7 +164,7 @@ RSpec.describe Gitt::Repository do
     it "creates tag with version infomration" do
       git_repo_dir.change_dir do
         repository.tag_create "0.1.0", "Test."
-        expect(repository.tag_last).to eq(Success("0.1.0"))
+        expect(repository.tag_last).to be_success("0.1.0")
       end
     end
   end
@@ -175,14 +175,14 @@ RSpec.describe Gitt::Repository do
       result = repository.call("tag", "0.0.0", chdir: path)
                          .bind { repository.tag_delete_local "0.0.0", chdir: path }
 
-      expect(result).to match(Success(/0\.0\.0/))
+      expect(result).to be_success("0.0.0")
     end
   end
 
   describe "#tag_delete_remote" do
     it "deletes tag" do
       repository = described_class.new shell: instance_double(Gitt::Shell, call: Success(""))
-      expect(repository.tag_delete_remote("0.0.0")).to match(Success("0.0.0"))
+      expect(repository.tag_delete_remote("0.0.0")).to be_success("0.0.0")
     end
   end
 
@@ -190,7 +190,7 @@ RSpec.describe Gitt::Repository do
     it "answers last tag" do
       git_repo_dir.change_dir do
         `git tag 0.0.0`
-        expect(repository.tag_last).to match(Success("0.0.0"))
+        expect(repository.tag_last).to be_success("0.0.0")
       end
     end
   end

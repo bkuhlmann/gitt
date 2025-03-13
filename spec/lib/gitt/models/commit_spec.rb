@@ -3,8 +3,6 @@
 require "spec_helper"
 
 RSpec.describe Gitt::Models::Commit do
-  include Dry::Monads[:result]
-
   subject(:commit) { described_class.new }
 
   describe "#initialize" do

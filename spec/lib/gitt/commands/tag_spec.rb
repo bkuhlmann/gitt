@@ -12,7 +12,7 @@ RSpec.describe Gitt::Commands::Tag do
   shared_examples "a tag" do |method|
     it "fails when there is no version" do
       result = command.public_send method, nil
-      expect(result).to eq(Failure("Unable to create Git tag without version."))
+      expect(result).to be_failure("Unable to create Git tag without version.")
     end
 
     it "prints warning when tag exists" do
@@ -20,14 +20,14 @@ RSpec.describe Gitt::Commands::Tag do
         `git tag 0.0.0`
         result = command.public_send method, "0.0.0"
 
-        expect(result).to eq(Failure("Tag exists: 0.0.0."))
+        expect(result).to be_failure("Tag exists: 0.0.0.")
       end
     end
   end
 
   describe "#call" do
     it "answers empty string with custom arguments" do
-      expect(command.call("--list", chdir: git_repo_dir.to_s)).to eq(Success(""))
+      expect(command.call("--list", chdir: git_repo_dir.to_s)).to be_success("")
     end
   end
 
@@ -36,7 +36,7 @@ RSpec.describe Gitt::Commands::Tag do
 
     it "deletes tag" do
       result = command.call("0.0.0", chdir: path).bind { command.delete_local "0.0.0", chdir: path }
-      expect(result).to eq(Success("0.0.0"))
+      expect(result).to be_success("0.0.0")
     end
 
     it "removes new line" do
@@ -45,7 +45,7 @@ RSpec.describe Gitt::Commands::Tag do
     end
 
     it "fails when tag isn't found" do
-      expect(command.delete_local("0.0.0", chdir: path)).to eq(Failure("'0.0.0' not found."))
+      expect(command.delete_local("0.0.0", chdir: path)).to be_failure("'0.0.0' not found.")
     end
   end
 
@@ -54,7 +54,7 @@ RSpec.describe Gitt::Commands::Tag do
 
     it "deletes tag" do
       command = described_class.new shell: instance_double(Gitt::Shell, call: Success(""))
-      expect(command.delete_remote("0.0.0")).to eq(Success("0.0.0"))
+      expect(command.delete_remote("0.0.0")).to be_success("0.0.0")
     end
 
     it "fails when tag isn't found" do
@@ -81,13 +81,13 @@ RSpec.describe Gitt::Commands::Tag do
     end
 
     it "answer version" do
-      git_repo_dir.change_dir { expect(command.create("1.2.3")).to eq(Success("1.2.3")) }
+      git_repo_dir.change_dir { expect(command.create("1.2.3")).to be_success("1.2.3") }
     end
 
     it "fails when tag can't be created" do
       git_repo_dir.rmtree.make_dir.change_dir do
         `git init`
-        expect(command.create("1.2.3")).to eq(Failure("Unable to create tag: 1.2.3."))
+        expect(command.create("1.2.3")).to be_failure("Unable to create tag: 1.2.3.")
       end
     end
   end
@@ -140,19 +140,19 @@ RSpec.describe Gitt::Commands::Tag do
     it "answers last tag when tag exists" do
       git_repo_dir.change_dir do
         `touch test.txt && git add . && git commit --message "Added test file" && git tag 0.1.0`
-        expect(command.last).to eq(Success("0.1.0"))
+        expect(command.last).to be_success("0.1.0")
       end
     end
 
     it "answers failure when no tags exist" do
-      expect(command.last(chdir: git_repo_dir.to_s)).to eq(Failure("No tags found."))
+      expect(command.last(chdir: git_repo_dir.to_s)).to be_failure("No tags found.")
     end
 
     it "answers failure when last tag can't be obtained" do
       shell = instance_double Gitt::Shell, call: Failure("fatal: Danger!")
       command = described_class.new(shell:)
 
-      expect(command.last).to eq(Failure("Danger!"))
+      expect(command.last).to be_failure("Danger!")
     end
   end
 

@@ -5,12 +5,12 @@ RSpec.shared_examples "a trailable" do
     let(:trailers) { [Gitt::Models::Trailer[key: "issue", value: "123"]] }
 
     it "answers trailer for matching key" do
-      expect(trailable.find_trailer("issue")).to eq(Success(trailers.first))
+      expect(trailable.find_trailer("issue")).to be_success(trailers.first)
     end
 
     it "answers failure when key isn't found" do
-      expect(trailable.find_trailer("format")).to eq(
-        Failure(%(Unable to find trailer for key: "format".))
+      expect(trailable.find_trailer("format")).to be_failure(
+        %(Unable to find trailer for key: "format".)
       )
     end
   end
@@ -36,7 +36,7 @@ RSpec.shared_examples "a trailable" do
     end
 
     it "answers empty array when key isn't found" do
-      expect(trailable.find_trailers("unknown")).to eq(Success([]))
+      expect(trailable.find_trailers("unknown")).to be_success([])
     end
   end
 
@@ -44,7 +44,7 @@ RSpec.shared_examples "a trailable" do
     let(:trailers) { [Gitt::Models::Trailer[key: "issue", value: "123"]] }
 
     it "answers trailer for matching key" do
-      expect(trailable.trailer_value_for("issue")).to eq(Success("123"))
+      expect(trailable.trailer_value_for("issue")).to be_success("123")
     end
 
     it "answers failure when key isn't found" do
@@ -64,11 +64,11 @@ RSpec.shared_examples "a trailable" do
     end
 
     it "answers array for matching key" do
-      expect(trailable.trailer_values_for("issue")).to eq(Success(%w[111 222]))
+      expect(trailable.trailer_values_for("issue")).to be_success(%w[111 222])
     end
 
     it "answers empty array when key isn't found" do
-      expect(trailable.trailer_values_for("unknown")).to eq(Success([]))
+      expect(trailable.trailer_values_for("unknown")).to be_success([])
     end
   end
 end

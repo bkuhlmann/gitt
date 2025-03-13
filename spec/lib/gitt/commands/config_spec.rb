@@ -27,15 +27,15 @@ RSpec.describe Gitt::Commands::Config do
     let(:key) { "user.name" }
 
     it "answers value without whitespace when key exists" do
-      expect(command.get(key, chdir: git_repo_dir.to_s)).to eq(Success("Test User"))
+      expect(command.get(key, chdir: git_repo_dir.to_s)).to be_success("Test User")
     end
 
     it "answers empty string when key doesn't exist" do
-      expect(command.get("bogus")).to eq(Success(""))
+      expect(command.get("bogus")).to be_success("")
     end
 
     it "answers default value when key is invalid" do
-      expect(command.get("bogus", "fallback")).to eq(Success("fallback"))
+      expect(command.get("bogus", "fallback")).to be_success("fallback")
     end
 
     it "yields error when when key is invalid" do
@@ -67,11 +67,11 @@ RSpec.describe Gitt::Commands::Config do
 
       it "sets key with value" do
         command.set key, value, chdir: git_repo_dir.to_s
-        expect(command.get(key, chdir: git_repo_dir.to_s)).to eq(Success(value))
+        expect(command.get(key, chdir: git_repo_dir.to_s)).to be_success(value)
       end
 
       it "answers value when key is successfully set" do
-        expect(command.set(key, value, chdir: git_repo_dir.to_s)).to eq(Success(value))
+        expect(command.set(key, value, chdir: git_repo_dir.to_s)).to be_success(value)
       end
     end
 
@@ -81,11 +81,11 @@ RSpec.describe Gitt::Commands::Config do
 
       it "sets key with value" do
         command.set key, value, chdir: git_repo_dir.to_s
-        expect(command.get(key, chdir: git_repo_dir.to_s)).to eq(Success(value))
+        expect(command.get(key, chdir: git_repo_dir.to_s)).to be_success(value)
       end
 
       it "answers value when key is successfully set" do
-        expect(command.set(key, value, chdir: git_repo_dir.to_s)).to eq(Success("example"))
+        expect(command.set(key, value, chdir: git_repo_dir.to_s)).to be_success("example")
       end
     end
 

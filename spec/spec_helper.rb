@@ -25,8 +25,6 @@ Pathname.require_tree Bundler.root.join("lib/gitt/rspec/shared_contexts")
 Pathname.require_tree SPEC_ROOT.join("support/shared_examples")
 
 RSpec.configure do |config|
-  include Dry::Monads[:result]
-
   config.color = true
   config.disable_monkey_patching!
   config.example_status_persistence_file_path = "./tmp/rspec-examples.txt"
@@ -46,4 +44,6 @@ RSpec.configure do |config|
     mocks.verify_doubled_constant_names = true
     mocks.verify_partial_doubles = true
   end
+
+  config.before(:suite) { Dry::Monads.load_extensions :rspec }
 end
