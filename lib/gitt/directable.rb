@@ -11,6 +11,6 @@ module Gitt
 
     def squash? = subject.match?(/\Asquash!\s/)
 
-    def prefix = subject[/\A[\w\!]+/]
+    def prefix = subject[/\A[\w!]+/]
   end
 end

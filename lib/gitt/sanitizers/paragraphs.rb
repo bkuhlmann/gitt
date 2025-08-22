@@ -14,9 +14,9 @@ module Gitt
         (              # Condition start.
         (?:\..*?\n)?   # Optional ASCII Doc label.
         (?:\[.*\]\n)?  # Optional ASCII Doc directive.
-        [-_=+\.\*]{4}  # ASCII Doc block start.
+        [-_=+.*]{4}    # ASCII Doc block start.
         [\s\S]*?       # Lazy block content of any character.
-        [-_=+\.\*]{4}  # ASCII Doc block end.
+        [-_=+.*]{4}    # ASCII Doc block end.
         |              # Or.
         ```            # Markdown start.
         [\s\S]*?       # Lazy block content of any character.
