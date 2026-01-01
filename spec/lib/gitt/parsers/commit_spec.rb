@@ -209,7 +209,7 @@ RSpec.describe Gitt::Parsers::Commit do
     it "answers statistics" do
       content_with_stats = "#{content}\n" \
                            "<statistics>2 files updated, 5 insertions, 10 deletions</statistics>"
-      proof = commit.merge deletions: 10, files_changed: 2, insertions: 5
+      proof = commit.with deletions: 10, files_changed: 2, insertions: 5
 
       expect(parser.call(content_with_stats)).to eq(proof)
     end
