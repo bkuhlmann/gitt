@@ -13,7 +13,9 @@ RSpec.shared_context "with Git commit" do
       raw: "",
       sha: "180dec7d8ae8cbe3565a727c63c2111e49e0b737",
       subject: "Added documentation",
-      trailers: []
+      trailers: [
+        Gitt::Models::Trailer.for("Milestone: patch")
+      ]
     ]
   end
 end
