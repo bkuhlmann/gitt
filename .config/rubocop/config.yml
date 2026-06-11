@@ -1,6 +1,9 @@
 inherit_gem:
   caliber: config/all.yml
 
+Metrics/CollectionLiteralLength:
+  Exclude:
+    - "spec/lib/gitt/commands/log_spec.rb"
 Metrics/ParameterLists:
   Exclude:
     - "lib/gitt/commands/config.rb"

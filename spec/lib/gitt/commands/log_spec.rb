@@ -314,32 +314,104 @@ RSpec.describe Gitt::Commands::Log do
           author_email: "test@example.com",
           author_name: "Test User",
           authored_relative_at: "0 seconds ago",
-          body: "An example paragraph.\n\n" \
-                "A bullet list:\n  - One.\n\n" \
-                "# A comment block.",
+          body: "An example paragraph. Pellentque morbi-trist sentus.\n\n" \
+                "# Multiple\n# comments\n# in a " \
+                "row\n\nA bullet list:\n  - *Strong*\n  - _Emphasis_\n  " \
+                "- #Highlight#\n\n# A single comment.\n\n[source,ruby]\n" \
+                "----\nputs \"A code block.\"\n\nrequire " \
+                "\"functionable\"\n\nmodule Math\n  extend Functionable\n" \
+                "\n  def add(first, second) = first + second\nend\n----\n" \
+                "\nNot-a-trailer-one: 1\n\nNot-a-trailer-two: 2",
           body_lines: [
-            "An example paragraph.",
+            "An example paragraph. Pellentque morbi-trist sentus.",
+            "",
+            "# Multiple",
+            "# comments",
+            "# in a row",
             "",
             "A bullet list:",
-            "  - One.",
+            "  - *Strong*",
+            "  - _Emphasis_",
+            "  - #Highlight#",
             "",
-            "# A comment block."
+            "# A single comment.",
+            "",
+            "[source,ruby]",
+            "----",
+            "puts \"A code block.\"",
+            "",
+            "require \"functionable\"",
+            "",
+            "module Math",
+            "  extend Functionable",
+            "",
+            "  def add(first, second) = first + second",
+            "end",
+            "----",
+            "",
+            "Not-a-trailer-one: 1",
+            "",
+            "Not-a-trailer-two: 2"
           ],
           body_paragraphs: [
-            "An example paragraph.",
-            "A bullet list:\n  - One.",
-            "# A comment block."
+            "An example paragraph. Pellentque morbi-trist sentus.",
+            "# Multiple\n# comments\n# in a row",
+            "A bullet list:\n  - *Strong*\n  - _Emphasis_\n  - #Highlight#",
+            "# A single comment.",
+            "[source,ruby]\n----\nputs \"A code block.\"\n\nrequire " \
+            "\"functionable\"\n\nmodule Math\n  extend Functionable\n" \
+            "\n  def add(first, second) = first + second\nend\n----",
+            "Not-a-trailer-one: 1",
+            "Not-a-trailer-two: 2"
           ],
-          raw: "Added example\n\n" \
-               "An example paragraph.\n\n" \
-               "A bullet list:\n  - One.\n\n" \
-               "# A comment block.\n\n" \
-               "One: 1\nTwo: 2\n",
+          lines: [
+            "Added example",
+            "",
+            "An example paragraph. Pellentque morbi-trist sentus.",
+            "",
+            "# Multiple",
+            "# comments",
+            "# in a row",
+            "",
+            "A bullet list:",
+            "  - *Strong*",
+            "  - _Emphasis_",
+            "  - #Highlight#",
+            "",
+            "# A single comment.",
+            "",
+            "[source,ruby]",
+            "----",
+            "puts \"A code block.\"",
+            "",
+            "require \"functionable\"",
+            "",
+            "module Math",
+            "  extend Functionable",
+            "",
+            "  def add(first, second) = first + second",
+            "end",
+            "----",
+            "",
+            "Not-a-trailer-one: 1",
+            "",
+            "Not-a-trailer-two: 2",
+            "",
+            "Milestone: patch"
+          ],
+          raw: "Added example\n\nAn example paragraph. Pellentque " \
+               "morbi-trist sentus.\n\n# Multiple\n" \
+               "# comments\n# in a row\n\nA bullet list:\n  - *Strong*\n  " \
+               "- _Emphasis_\n  - #Highlight#\n\n# A single comment.\n" \
+               "\n[source,ruby]\n----\nputs \"A code block.\"\n\nrequire " \
+               "\"functionable\"\n\nmodule Math\n  extend Functionable\n" \
+               "\n  def add(first, second) = first + second\nend\n----\n" \
+               "\nNot-a-trailer-one: 1\n\nNot-a-trailer-two: 2\n\n" \
+               "Milestone: patch\n",
           sha: /\A\h{40}\Z/,
           subject: "Added example",
           trailers: [
-            Gitt::Models::Trailer[key: "One", value: "1"],
-            Gitt::Models::Trailer[key: "Two", value: "2"]
+            Gitt::Models::Trailer[key: "Milestone", value: "patch"]
           ]
         )
       end

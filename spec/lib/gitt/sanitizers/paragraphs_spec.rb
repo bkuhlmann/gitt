@@ -14,6 +14,60 @@ RSpec.describe Gitt::Sanitizers::Paragraphs do
       expect(sanitizer.call("one\n\ntwo\n")).to eq(%w[one two])
     end
 
+    it "answers paragraph with punctuation." do
+      expect(sanitizer.call("Once up a time. In a land forgetten. There was a wizard.")).to eq(
+        ["Once up a time. In a land forgetten. There was a wizard."]
+      )
+    end
+
+    it "answers paragraph with unordered list of markup" do
+      content = <<~CONTENT
+        The following is possible:
+        * **String**
+        * _Emphasis_
+        * #Highlight#
+        * ~Super~script
+        * ^Sub^script
+        * footnote:[Footnote]
+        * `puts "Code snippet."`
+        * link:https://test.io[Link]
+      CONTENT
+
+      expect(sanitizer.call(content)).to eq(
+        [
+          <<~CONTENT.strip
+            The following is possible:
+            * **String**
+            * _Emphasis_
+            * #Highlight#
+            * ~Super~script
+            * ^Sub^script
+            * footnote:[Footnote]
+            * `puts "Code snippet."`
+            * link:https://test.io[Link]
+          CONTENT
+        ]
+      )
+    end
+
+    it "answers multiple comment lines" do
+      content = <<~CONTENT
+        # One.
+        # Two.
+        # Three.
+      CONTENT
+
+      expect(sanitizer.call(content)).to eq(
+        [
+          <<~CONTENT.strip
+            # One.
+            # Two.
+            # Three.
+          CONTENT
+        ]
+      )
+    end
+
     it "answers ASCII Doc listing block with single lines" do
       content = <<~CONTENT
         ----
@@ -514,6 +568,27 @@ RSpec.describe Gitt::Sanitizers::Paragraphs do
       CONTENT
 
       expect(sanitizer.call(content)).to eq(["Example:", code, "End."])
+    end
+
+    it "answers paragraphs large commit body" do
+      content = SPEC_ROOT.join("support/fixtures/commit-valid.txt").read
+      result = sanitizer.call content
+
+      expect(result).to eq(
+        [
+          "Added example",
+          "An example paragraph. Pellentque morbi-trist sentus.",
+          "# Multiple\n# comments\n# in a row",
+          "A bullet list:\n  - *Strong*\n  - _Emphasis_\n  - #Highlight#",
+          "# A single comment.",
+          "[source,ruby]\n----\nputs \"A code block.\"\n\nrequire \"functionable\"\n\n" \
+          "module Math\n  extend Functionable\n\n  def add(first, second) = first + " \
+          "second\nend\n----",
+          "Not-a-trailer-one: 1",
+          "Not-a-trailer-two: 2",
+          "Milestone: patch"
+        ]
+      )
     end
 
     it "answer empty array when nil" do

@@ -1,11 +1,33 @@
 Added example
 
-An example paragraph.
+An example paragraph. Pellentque morbi-trist sentus.
+
+# Multiple
+# comments
+# in a row
 
 A bullet list:
-  - One.
+  - *Strong*
+  - _Emphasis_
+  - #Highlight#
 
-# A comment block.
+# A single comment.
 
-One: 1
-Two: 2
+[source,ruby]
+----
+puts "A code block."
+
+require "functionable"
+
+module Math
+  extend Functionable
+
+  def add(first, second) = first + second
+end
+----
+
+Not-a-trailer-one: 1
+
+Not-a-trailer-two: 2
+
+Milestone: patch
