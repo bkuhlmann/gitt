@@ -14,3 +14,5 @@ detectors:
     exclude:
       - "Gitt::Commands::Tag"
       - "Gitt::Repository"
+  UnusedParameters:
+    enabled: false
